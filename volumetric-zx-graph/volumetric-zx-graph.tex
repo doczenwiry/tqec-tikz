@@ -1,0 +1,217 @@
+\documentclass[tikz, preview, border=1pt]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\usepackage{xstring}
+\usepackage{xkeyval}
+
+\usepackage{tikz}
+
+\tikzstyle{quantum red}=[red!75!black!50]
+\tikzstyle{quantum green}=[green!75!black!50]
+\tikzstyle{quantum blue}=[ blue!75!black!50]
+\tikzstyle{boundary}=[darkgray!90]
+
+\tikzstyle{edge}=[line cap = round, ultra thick]
+\tikzstyle{identity}=[darkgray!90]
+\tikzstyle{hadamard}=[yellow!75!black!75]
+
+\tikzset{
+	% Graph parameters
+	zx/graph/labels/.initial=hide,
+	zx/graph/labels/.store in=\ShowNodeLabels,
+	% Node parameters
+	zx/node/type/.initial=R,
+	zx/node/type/.store in=\NodeType,
+	zx/node/identifier/.store in=\Identifier,
+	% Edge parameters
+	zx/edge/type/.store in=\EdgeType,
+	% Plane parameters
+	zx/plane/node/.store in=\Identifier,
+	zx/plane/orientation/.store in=\Orientation
+}
+
+\newcommand{\Node}[2][]{
+	\begingroup
+		\tikzset{zx/node/.cd, #1}
+
+		\coordinate (node\Identifier) at #2;
+
+		\IfStrEqCase{\NodeType}{
+			{R}{\fill[quantum red] (node\Identifier) circle (3pt);}
+			{G}{\fill[quantum green] (node\Identifier) circle (3pt);}
+			{B}{\fill[quantum blue] (node\Identifier) circle (3pt);}
+			{O}{\draw[boundary, line width = 1pt] (node\Identifier) circle (4pt);}
+		}
+
+		\node (\Identifier) at (node\Identifier) {};
+		\ifdefined\ShowNodeLabels
+			\IfStrEqCase{\ShowNodeLabels}{
+				{show}{\node[scale=0.25] at (node\Identifier) {\textsc{\Identifier}};}
+				{hide}{}
+			}
+		\fi
+
+	\endgroup
+}
+
+\newcommand{\Edge}[3][]{
+	\begingroup
+		\tikzset{zx/edge/.cd, #1}
+		\ifdefined\EdgeType
+			\draw[edge, \EdgeType, shorten <= 6pt, shorten >= 6pt] (node#2) -- (node#3);
+		\else
+			\draw[edge, identity, shorten <= 6pt, shorten >= 6pt] (node#2) -- (node#3);
+		\fi
+	\endgroup
+}
+
+\newcommand{\Plane}[2][]{
+	\begingroup
+		\tikzset{zx/plane/.cd, #1}
+
+		\IfStrEqCase{\Orientation}{
+			{X}{\draw[quantum red, line width = 1pt] (node\Identifier) circle (4pt);}
+			{Y}{\draw[quantum green, line width = 1pt] (node\Identifier) circle (4pt);}
+			{Z}{\draw[quantum blue, line width = 1pt] (node\Identifier) circle (4pt);}
+		}
+	\endgroup
+}
+
+\newcommand{\ZXGraph}[3][]{
+	\begingroup
+		\tikzset{zx/graph/.cd, #1}
+		\begin{tikzpicture}
+			{#2} % Layout of the ZX-Graph (i.e. nodes and edges)
+			{#3} % Draw plane-constraints on spiders
+		\end{tikzpicture}
+	\endgroup
+}
+
+%A spider with at most four legs must have all its leg in the same plane (X, Y or Z) \\
+%
+%\sc Minimal length of path connecting:
+%\begin{itemize}
+%	\item Two adjacent spiders of the same color lying in the same plane : 1
+%	\item Two adjacent spiders of different colors lying in the same plane : 3
+%\end{itemize}
+
+\begin{document}
+	% CNOT
+	\ZXGraph{
+		\Node[type=O, identifier=B1]{(-1, 0)}
+		\Node[type=R, identifier=X1]{( 0, 0)}
+		\Node[type=O, identifier=B2]{(-1,-1)}
+
+		\Node[type=O, identifier=B3]{(+1, 0)}
+		\Node[type=B, identifier=Z1]{( 0,-1)}
+		\Node[type=O, identifier=B4]{(+1,-1)}
+
+		\Edge{X1}{B1}
+		\Edge{X1}{B3}
+		\Edge{X1}{Z1}
+		\Edge{Z1}{B2}
+		\Edge{Z1}{B4}
+	}{
+		\Plane[node=X1, orientation=X]{}
+		\Plane[node=Z1, orientation=Z]{}
+	}
+
+	% Double-CNOT
+	\ZXGraph{
+		\Node[type=O, identifier=B1]{(0, 0)}
+		\Node[type=O, identifier=B2]{(0,-1)}
+
+		\Node[type=O, identifier=B3]{(3, 0)}
+		\Node[type=O, identifier=B4]{(3,-1)}
+
+		\Node[type=R, identifier=X1]{(1, 0)}
+		\Node[type=B, identifier=Z1]{(1,-1)}
+
+		\Node[type=B, identifier=Z2]{(2, 0)}
+		\Node[type=R, identifier=X2]{(2,-1)}
+
+		\Edge{B1}{X1}
+		\Edge{X1}{Z2}
+		\Edge{Z2}{B3}
+
+		\Edge{B2}{Z1}
+		\Edge{Z1}{X2}
+		\Edge{X2}{B4}
+
+		\Edge{X1}{Z1}
+		\Edge{Z2}{X2}
+	}{
+		\Plane[node=X1, orientation=X]{}
+		\Plane[node=Z1, orientation=Y]{}
+
+		\Plane[node=Z2, orientation=Y]{}
+		\Plane[node=X2, orientation=X]{}
+	}
+
+	% Double-CNOT
+	\ZXGraph{
+		\Node[type=O, identifier=B1]{(0, 0)}
+		\Node[type=O, identifier=B2]{(0,-1)}
+
+		\Node[type=O, identifier=B3]{(3, 0)}
+		\Node[type=O, identifier=B4]{(3,-1)}
+
+		\Node[type=R, identifier=X1]{(1, 0)}
+		\Node[type=B, identifier=Z1]{(1,-1)}
+
+		\Node[type=B, identifier=Z2]{(2, 0)}
+		\Node[type=R, identifier=X2]{(2,-1)}
+
+		\Edge{B1}{X1}
+		\Edge{X1}{Z2}
+		\Edge{Z2}{B3}
+
+		\Edge{B2}{Z1}
+		\Edge{Z1}{X2}
+		\Edge{X2}{B4}
+
+		\Edge{X1}{Z1}
+		\Edge{Z2}{X2}
+	}{
+		\Plane[node=X1, orientation=X]{}
+		\Plane[node=Z1, orientation=Y]{}
+
+		\Plane[node=Z2, orientation=Z]{}
+		\Plane[node=X2, orientation=Z]{}
+	}
+
+	% Double-CNOT
+	\ZXGraph{
+		\Node[type=O, identifier=B1]{(0, 0)}
+		\Node[type=O, identifier=B2]{(0,-1)}
+
+		\Node[type=O, identifier=B3]{(3, 0)}
+		\Node[type=O, identifier=B4]{(3,-1)}
+
+		\Node[type=R, identifier=X1]{(1, 0)}
+		\Node[type=B, identifier=Z1]{(1,-1)}
+
+		\Node[type=B, identifier=Z2]{(2, 0)}
+		\Node[type=R, identifier=X2]{(2,-1)}
+
+		\Edge{B1}{X1}
+		\Edge{X1}{Z2}
+		\Edge{Z2}{B3}
+
+		\Edge{B2}{Z1}
+		\Edge{Z1}{X2}
+		\Edge{X2}{B4}
+
+		\Edge{X1}{Z1}
+		\Edge{Z2}{X2}
+	}{
+		\Plane[node=X1, orientation=X]{}
+		\Plane[node=Z1, orientation=Y]{}
+
+		\Plane[node=Z2, orientation=Y]{}
+		\Plane[node=X2, orientation=Z]{}
+	}
+
+\end{document}

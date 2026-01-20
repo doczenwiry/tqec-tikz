@@ -1,0 +1,251 @@
+\documentclass[tikz, preview, border=2pt]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\usepackage{ifthen}
+\usepackage{xstring}
+
+\usepackage{tikz}
+\usetikzlibrary{math}
+
+\tikzstyle{data}=[darkgray!80]
+\tikzstyle{stabilizer}=[line width = 1pt, opacity=0.35]
+\tikzstyle{X}=[  red!75!black!75]
+\tikzstyle{Y}=[green!75!black!75]
+\tikzstyle{Z}=[ blue!75!black!75]
+
+\makeatletter
+	\define@key{sca:main}{order}{\def\Order{#1}} % Distance = 2*Order + 1
+	\define@key{sca:main}{qubits}{\def\ShowQubits{#1}}
+	\define@key{sca:main}{labels}{\def\ShowLabels{#1}}
+	% Controls the offset of the 2-qubit stabilizers along the perimeter 
+	\define@key{sca:main}{perimeter}{\def\Perimeter{#1}}
+	% Controls whether there is a Hadamard flip on the surface code array
+	\define@key{sca:main}{hadamard}{\def\Hadamard{#1}}
+	\setkeys{sca:main}{qubits=show, labels=hide, perimeter=0, hadamard=0}
+
+	\define@key{sca:qubit}{position}{\def\Position{#1}}
+	% Needed to properly place the 2-qubit stabilizers.
+	% This can be inferred from the parity of the coordinates but I don't know how to do that in tikz-math.
+	\define@key{sca:main}{offset}{\def\Offset{#1}}
+	\define@key{sca:qubit}{orderH}{\def\OrderH{#1}}
+	\define@key{sca:qubit}{orderW}{\def\OrderW{#1}}
+\makeatother
+
+\tikzmath{
+	function Plaquette(\RowDistance, \ColDistance, \Row, \Col, \Opacity) {
+		% Place two-qubits stabilizers on the LEFT
+		if \Col == 0 && Mod(\Row, \RowDistance) != 0 && Mod(\Row+\Col, 2) == \Offset then {
+			if Mod(\Row+\Col, 2) == \Hadamard then {
+				{ % Z-stabilizers
+					\fill[stabilizer, Z, opacity = \Opacity] (\Col + 1 - \Trim, \Row + \Trim) 
+					    arc[start angle=270, end angle=90, radius=0.5 - \Trim]
+					    -- (\Col + 1 - \Trim, \Row + \Trim) -- cycle;
+					\node[Z, opacity = \Opacity] (M\Col\Row) at (\Col + 0.775, \Row + 0.5) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut Z}{}
+					};
+				};
+			} else {
+				{ % X-stabilizers
+					\fill[stabilizer, X, opacity = \Opacity] (\Col + 1 - \Trim, \Row + \Trim) 
+					    arc[start angle=270, end angle=90, radius=0.5 - \Trim]
+					    -- (\Col + 1 - \Trim, \Row + \Trim) -- cycle;
+					\node[X, opacity = \Opacity] (M\Col\Row) at (\Col + 0.775, \Row + 0.5) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut X}{}
+					};
+				};
+			};
+		};
+		% Place two-qubits stabilizers on the RIGHT
+		if \Col == \ColDistance && Mod(\Row, \RowDistance) != 0 && Mod(\Row+\Col, 2) == \Offset then {
+			if Mod(\Row+\Col, 2) == \Hadamard then {
+				{ % Z-stabilizers
+					\fill[stabilizer, Z, opacity = \Opacity] (\Col + \Trim, \Row + \Trim) 
+					    arc[start angle=270, end angle=450, radius=0.5 - \Trim]
+					    -- (\Col + \Trim, \Row + \Trim) -- cycle;
+					\node[Z, opacity = \Opacity] (M\Col\Row) at (\Col + 0.225, \Row + 0.5) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut Z}{}
+					};
+				};
+			} else {
+				{ % X-stabilizers
+					\fill[stabilizer, X, opacity = \Opacity] (\Col + \Trim, \Row + \Trim) 
+					    arc[start angle=270, end angle=450, radius=0.5 - \Trim]
+					    -- (\Col + \Trim, \Row + \Trim) -- cycle;
+					\node[X, opacity = \Opacity] (M\Col\Row) at (\Col + 0.225, \Row + 0.5) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut X}{}
+					};
+				};
+			};
+		};
+		% Place four-qubits stabilizers WITHIN the array
+		if Mod(\Col, \ColDistance) != 0 && Mod(\Row, \RowDistance) != 0 then {
+			if Mod(\Row+\Col, 2) == \Hadamard then {
+				{
+					\fill[stabilizer, Z, opacity = \Opacity] (\Col + \Trim, \Row + \Trim)
+						rectangle (\Col + 1 - \Trim, \Row + 1 - \Trim);
+					\node[Z, opacity = \Opacity] (M\Col\Row) at (\Col + 0.5, \Row + 0.5) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut Z}{}
+					};
+				};
+			} else {
+				{
+					\fill[stabilizer, X, opacity = \Opacity] (\Col + \Trim, \Row + \Trim)
+						rectangle (\Col + 1 - \Trim, \Row + 1 - \Trim);
+					\node[X, opacity = \Opacity] (M\Col\Row) at (\Col + 0.5, \Row + 0.5) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut X}{}
+					};
+				};
+			};
+		};
+		% Place two-qubits X-stabilizers at the BOTTOM
+		if \Row == 0 && Mod(\Col, \ColDistance) != 0 && Mod(\Row+\Col, 2) != \Offset then {
+			if Mod(\Row+\Col, 2) == \Hadamard then {
+				{
+					\fill[stabilizer, Z, opacity = \Opacity] (\Col + \Trim,\Row + 1 - \Trim) 
+					    arc[start angle=180, end angle=360, radius=0.5 - \Trim]
+					    -- (\Col + 1 - \Trim, \Row + 1 - \Trim) -- cycle;
+					\node[Z, opacity = \Opacity] (M\Col\Row) at (\Col + 0.5, \Row + 0.725) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut Z}{}
+					};
+				};
+			} else {
+				{
+					\fill[stabilizer, X, opacity = \Opacity] (\Col + \Trim,\Row + 1 - \Trim) 
+					    arc[start angle=180, end angle=360, radius=0.5 - \Trim]
+					    -- (\Col + 1 - \Trim, \Row + 1 - \Trim) -- cycle;
+					\node[X, opacity = \Opacity] (M\Col\Row) at (\Col + 0.5, \Row + 0.725) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut X}{}
+					};
+				};
+			};
+		};
+		% Place two-qubits X-stabilizers at the TOP
+		if \Row == \RowDistance && Mod(\Col, \ColDistance) != 0 && Mod(\Row+\Col, 2) != \Offset then {
+			if Mod(\Row+\Col, 2) == \Hadamard then {
+				{
+					\fill[stabilizer, Z, opacity = \Opacity] (\Col + \Trim,\Row + \Trim) 
+					    arc[start angle=180, end angle=0, radius=0.5 - \Trim]
+					    -- (\Col + 1 - \Trim, \Row + \Trim) -- cycle;
+					\node[Z, opacity = \Opacity] (M\Col\Row) at (\Col + 0.5, \Row + 0.225) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut Z}{}
+					};
+				};
+			} else {
+				{
+					\fill[stabilizer, X, opacity = \Opacity] (\Col + \Trim,\Row + \Trim) 
+					    arc[start angle=180, end angle=0, radius=0.5 - \Trim]
+					    -- (\Col + 1 - \Trim, \Row + \Trim) -- cycle;
+					\node[X, opacity = \Opacity] (M\Col\Row) at (\Col + 0.5, \Row + 0.225) {
+						\ifthenelse{\equal{\ShowLabels}{show}}{\tt\strut X}{}
+					};
+				};
+			};
+		};
+	};
+}
+
+\newcommand{\SurfaceCodeArray}[2][]{
+	\begingroup
+		\setkeys{sca:main}{#1}
+		
+		\def\Offset{\Perimeter}
+
+		\begin{tikzpicture}
+			\tikzmath{
+				real \Trim;
+				\Trim = 1 / 128;
+				integer \Distance;
+				\Distance = 2*\Order + 1;
+				integer \h;
+				integer \v;
+				% Place Stabilizer qubits
+				for \row in {0,...,\Distance} {
+					for \col in {0,...,\Distance} {
+						Plaquette(\Distance, \Distance, \row, \col, 0.125);
+					};
+				};
+				% Place Data qubits
+				for \row in {1,...,\Distance} {
+					for \col in {1,...,\Distance} {
+						{
+							\ifthenelse{\equal{\ShowQubits}{show}}{
+								\fill[white] (\col, \row) circle (2.5pt);
+								\fill[darkgray!25] (\col, \row) circle (2pt);
+							}{}
+						};
+					};
+				};
+			}
+
+			{#2}
+		\end{tikzpicture}
+	\endgroup
+}
+
+\newcommand{\LogicalQubit}[2][]{
+	\begingroup
+		\setkeys{sca:main,sca:qubit}{#1}
+
+		\ifdefined\OrderH\else\def\OrderH{\Order}\fi
+		\ifdefined\OrderW\else\def\OrderW{\Order}\fi
+
+		\def\Hadamard{\Offset} % Should be mod(Offset+Perimeter, 2)
+
+		\begin{scope}[shift={(\Position)}]
+			\tikzmath{
+				real \Trim;
+				\Trim = 1 / 128;
+				integer \DistanceH, \DistanceW;
+				\DistanceH = 2*\OrderH + 1;
+				\DistanceW = 2*\OrderW + 1;
+				% Place Stabilizer Plaquettes
+				for \row in {0,...,\DistanceH} {
+					for \col in {0,...,\DistanceW} {
+						Plaquette(\DistanceH, \DistanceW, \row, \col, 0.4);
+					};
+				};
+				% Place Data Qubits
+				for \row in {1,...,\DistanceH} {
+					for \col in {1,...,\DistanceW} {
+						{
+							\ifthenelse{\equal{\ShowQubits}{show}}{
+								\fill[white] (\col, \row) circle (2.5pt);
+								\fill[data] (\col,\row) circle (2pt);
+							}{}
+						};
+					};
+				};
+			}
+		\end{scope}
+	\endgroup
+}
+
+\begin{document}
+	\SurfaceCodeArray[order = 3, qubits = show]{
+		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
+		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+	}
+
+	\SurfaceCodeArray[order = 3, qubits = show]{
+		\LogicalQubit[order=1, position={(0,0)}, orderW=3, labels=show]{}
+		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+	}
+
+	\SurfaceCodeArray[order = 3, qubits = show]{
+		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
+		\LogicalQubit[order=1, position={(4,0)}, labels=show]{}
+		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+	}
+
+	\SurfaceCodeArray[order = 3, qubits = show]{
+		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
+		\LogicalQubit[order=1, position={(4,0)}, orderH=3, labels=show]{}
+	}
+
+	\SurfaceCodeArray[order = 3, qubits = show]{
+		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
+		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+	}
+\end{document}
