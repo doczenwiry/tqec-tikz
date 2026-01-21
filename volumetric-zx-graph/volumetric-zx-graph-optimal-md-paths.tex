@@ -1,0 +1,371 @@
+\documentclass[tikz, preview, border=1pt]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\usepackage{ifthen}
+\usepackage{xstring}
+
+\usepackage{tikz}
+
+\tikzstyle{edge}=[line cap = round, ultra thick]
+\tikzstyle{identity}=[darkgray!90]
+\tikzstyle{hadamard}=[yellow!75!black!75]
+
+\tikzstyle{axis}=[line cap=round, thick]
+\tikzstyle{U}=[lightgray]
+\tikzstyle{X}=[  red!75!black!50]
+\tikzstyle{Y}=[green!75!black!50]
+\tikzstyle{Z}=[ blue!75!black!50]
+\tikzstyle{O}=[darkgray!90, line width = 1pt]
+
+\tikzset{
+	% Graph parameters
+	zx/graph/labels/.initial=hide,
+	zx/graph/labels/.store in=\ShowNodeLabels,
+	% Cube parameters
+	zx/cube/labels/.store in=\ShowCubeLabels,
+	zx/cube/x/.store in=\ColorX,
+	zx/cube/y/.store in=\ColorY,
+	zx/cube/z/.store in=\ColorZ,
+	% Node parameters
+	zx/node/type/.store in=\NodeType,
+	zx/node/identifier/.store in=\Identifier,
+	% Edge parameters
+	zx/edge/axis/.store in=\EdgeAxis, % Edge represents a change of +1/-1 between two adjacent spiders along an axis
+	zx/edge/type/.store in=\EdgeType, % Edge can be identity or hadamard
+	% Plane parameters
+	zx/plane/node/.store in=\Identifier,
+	zx/plane/normal/.store in=\NormalVector
+}
+
+\newcommand{\Cube}[2][]{
+	\begingroup
+		\tikzset{zx/cube/.cd, #1}
+
+		\coordinate (center) at #2;
+
+		\fill[\ColorX] (center) -- +(270: 0.175) -- +(210: 0.175) -- +(150 : 0.175);
+		\fill[\ColorY] (center) -- +(30: 0.175) -- +(-30 : 0.175) -- +(270: 0.175);
+		\fill[\ColorZ] (center) -- +(150: 0.175) -- +(90: 0.175) -- +(30 : 0.175);
+
+		\draw[draw=black, line width = 0.25pt] (center) -- +( 30: 0.175);
+		\draw[draw=black, line width = 0.25pt] (center) -- +(150: 0.175);
+		\draw[draw=black, line width = 0.25pt] (center) -- +(270: 0.175);
+
+		\draw[draw=black, line width = 0.25pt] ([shift={(30:0.175)}] center) -- +(150: 0.175);
+		\draw[draw=black, line width = 0.25pt] ([shift={(30:0.175)}] center) -- +(270: 0.175);
+
+		\draw[draw=black, line width = 0.25pt] ([shift={(150:0.175)}] center) -- +( 30: 0.175);
+		\draw[draw=black, line width = 0.25pt] ([shift={(150:0.175)}] center) -- +(270: 0.175);
+
+		\draw[draw=black, line width = 0.25pt] ([shift={(270:0.175)}] center) -- +( 30: 0.175);
+		\draw[draw=black, line width = 0.25pt] ([shift={(270:0.175)}] center) -- +(150: 0.175);
+
+		\ifdefined\ShowCubeLabels
+			\IfStrEqCase{\ShowCubeLabels}{
+				{show}{
+					\node at ([shift={( 90: 0.0875)}] center) {\scriptsize\tt Z};
+					\node at ([shift={(210: 0.0875)}] center) {\scriptsize\tt X};
+					\node at ([shift={(330: 0.0875)}] center) {\scriptsize\tt Y};
+				}
+			}
+		\fi
+	\endgroup
+}
+
+\newcommand{\Node}[2][]{
+	\begingroup
+		\tikzset{zx/node/.cd, #1}
+
+		\coordinate (node\Identifier) at #2;
+
+		\ifthenelse{\equal{\NodeType}{O}}{
+			\fill[\NodeType] (node\Identifier) circle (2pt);
+		}{
+			\fill[\NodeType] (node\Identifier) circle (3pt);
+		}
+
+		\node (\Identifier) at (node\Identifier) {};
+		\ifdefined\ShowNodeLabels
+			\IfStrEqCase{\ShowNodeLabels}{
+				{show}{\node[white, scale=0.25] at (node\Identifier) {\tt\Identifier};}
+				{hide}{}
+			}
+		\fi
+
+	\endgroup
+}
+
+\newcommand{\Edge}[3][]{
+	\begingroup
+		\tikzset{zx/edge/.cd, #1}
+		\ifdefined\EdgeType
+			\draw[edge, \EdgeType, shorten <= 6pt, shorten >= 6pt] (node#2) -- (node#3);
+		\else
+			\draw[edge, identity, shorten <= 6pt, shorten >= 6pt] (node#2) -- (node#3);
+		\fi
+		\ifdefined\EdgeAxis
+			\draw[edge, thick, \EdgeAxis, shorten <= 6pt, shorten >= 6pt] (node#2) -- (node#3);
+		\fi
+	\endgroup
+}
+
+\newcommand{\Plane}[2][]{
+	\begingroup
+		\tikzset{zx/plane/.cd, #1}
+
+		\draw[\NormalVector, line width = 1pt] (node\Identifier) circle (4pt);
+	\endgroup
+}
+
+\newcommand{\ZXGraph}[3][]{
+	\begingroup
+		\tikzset{zx/graph/.cd, #1}
+		\begin{tikzpicture}
+			{#2} % Layout of the ZX-Graph (i.e. nodes and edges)
+			{#3} % Draw plane-constraints on spiders
+		\end{tikzpicture}
+	\endgroup
+}
+
+% A spider with at most four legs must have all its leg in the same plane (X, Y or Z)
+
+%\sc Minimal length of path connecting:
+%\begin{itemize}
+%	\item Two adjacent spiders of the same color lying in the same plane : 1
+%	\item Two adjacent spiders of different colors lying in the same plane : 3
+%\end{itemize}
+
+% Assigning plane constraints may increase the Manhattan Distance between two spiders
+% This means they are not adjacent in 3D and require a sequence of edges to connect them.
+
+\begin{document}
+	\ZXGraph[labels=hide]{
+		\Node[type=X, identifier=XZZ]{(0,+1.0)}
+		\node at (0.375, 1) {$\equiv$};
+		\Cube[x=X,y=Z,z=Z]{(0.75, 1.0)}
+
+		\Node[type=X, identifier=ZXZ]{(0,+0.5)}
+		\node at (0.375,0.5) {$\equiv$};
+		\Cube[x=Z,y=X,z=Z]{(0.75, 0.5)}
+
+		\Node[type=X, identifier=ZZX]{(0, 0.0)}
+		\node at (0.375,0.0) {$\equiv$};
+		\Cube[x=Z,y=Z,z=X]{(0.75, 0.0)}
+
+		\Node[type=Z, identifier=ZXX]{(1.5,+1.0)}
+		\node at (1.875, 1) {$\equiv$};
+		\Cube[x=Z,y=X,z=X]{(2.25, 1.0)}
+
+		\Node[type=Z, identifier=XZX]{(1.5,+0.5)}
+		\node at (1.875,0.5) {$\equiv$};
+		\Cube[x=X,y=Z,z=X]{(2.25, 0.5)}
+
+		\Node[type=Z, identifier=XXZ]{(1.5, 0.0)}
+		\node at (1.875,0.0) {$\equiv$};
+		\Cube[x=X,y=X,z=Z]{(2.25, 0.0)}
+
+		\begin{scope}[scale=2]
+			\draw[-stealth] (-0.5, 0.25) -- +(210 : 0.3);
+			\node at ([shift={(210: 0.35)}] -0.5, 0.25) {\tiny $x$};
+
+			\draw[-stealth] (-0.5, 0.25) -- +(330: 0.3);
+			\node at ([shift={(330: 0.35)}] -0.5, 0.25) {\tiny $y$};
+
+			\draw[-stealth] (-0.5, 0.25) -- +(90: 0.3);
+			\node at ([shift={(90: 0.35)}] -0.5, 0.25) {\tiny $z$};
+
+			\Cube[x=X,y=Y,z=Z, labels=show]{(-0.5, +0.25)}
+		\end{scope}
+	}{
+		\Plane[node=XZZ, normal=X]{}
+		\Plane[node=ZXZ, normal=Y]{}
+		\Plane[node=ZZX, normal=Z]{}
+		\Plane[node=ZXX, normal=X]{}
+		\Plane[node=XZX, normal=Y]{}
+		\Plane[node=XXZ, normal=Z]{}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) has Opt. MD=6. Minimal overhead: none.
+	\ZXGraph[labels=show]{
+		\Node[type=X, identifier=S1]{( 0, 0)}
+		\Node[type=X, identifier=S2]{(+3,-3)}
+
+		\Node[type=X, identifier=E1]{( 0,-1)}
+		\Node[type=X, identifier=E2]{( 0,-2)}
+		\Node[type=X, identifier=E3]{( 0,-3)}
+		\Node[type=X, identifier=E4]{(+1,-3)}
+		\Node[type=X, identifier=E5]{(+2,-3)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Z]{E2}{E3}
+		\Edge[axis=Y]{E3}{E4}
+		\Edge[axis=Y]{E4}{E5}
+		\Edge[axis=Y]{E5}{S2}
+	}{
+		\Plane[node=S1, normal=X]{}
+		\Plane[node=S2, normal=X]{}
+		\foreach \N in {E1,E2,E3,E4,E5}{
+			\Plane[node=\N, normal=X]{}
+		}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) have OMD=8. Minimal overhead: +2 extra spiders.
+	\ZXGraph[labels=show]{
+		\Node[type=X, identifier=S1]{( 0, 0)}
+		\Node[type=X, identifier=S2]{(+3,-3)}
+
+		\Node[type=X, identifier=E1]{( 0,-1)}
+		\Node[type=X, identifier=E2]{( 0,-2)}
+		\Node[type=Z, identifier=E3]{(+1,-2)}
+		\Node[type=X, identifier=E4]{(+1.7,-1.3)}
+		\Node[type=Z, identifier=E5]{(+1.7,-2.3)}
+		\Node[type=Z, identifier=E6]{(+2.7,-2.3)}
+		\Node[type=X, identifier=E7]{(+3.7,-2.3)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=X]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=Y]{E5}{E6}
+		\Edge[axis=Y]{E6}{E7}
+		\Edge[axis=X]{E7}{S2}
+	}{
+		\Plane[node=S1, normal=X]{}
+		\Plane[node=S2, normal=Z]{}
+
+		\foreach \N in {E1,E2,E5,E6}{
+			\Plane[node=\N, normal=X]{}
+		}
+
+		\foreach \N in {E4}{
+			\Plane[node=\N, normal=Y]{}
+		}
+
+		\foreach \N in {E3,E7}{
+			\Plane[node=\N, normal=Z]{}
+		}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) has OMD=8. Minimal overhead: +2 extra spiders.
+	\ZXGraph[labels=show]{
+		\Node[type=X, identifier=S1]{( 0, 0)}
+		\Node[type=X, identifier=S2]{(+3,-3)}
+
+		\Node[type=X, identifier=E1]{( 0,-1)}
+		\Node[type=X, identifier=E2]{( 0,-2)}
+		\Node[type=Z, identifier=E3]{(+1,-2)}
+		\Node[type=X, identifier=E4]{(+0.3,-2.7)}
+		\Node[type=Z, identifier=E5]{(+0.3,-3.7)}
+		\Node[type=Z, identifier=E6]{(+1.3,-3.7)}
+		\Node[type=X, identifier=E7]{(+2.3,-3.7)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=X]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=Y]{E5}{E6}
+		\Edge[axis=Y]{E6}{E7}
+		\Edge[axis=X]{E7}{S2}
+	}{
+		\Plane[node=S1, normal=X]{}
+		\Plane[node=S2, normal=Z]{}
+
+		\foreach \N in {E1,E2,E5,E6}{
+			\Plane[node=\N, normal=X]{}
+		}
+
+		\foreach \N in {E4}{
+			\Plane[node=\N, normal=Y]{}
+		}
+
+		\foreach \N in {E3,E7}{
+			\Plane[node=\N, normal=Z]{}
+		}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) has OMD=8. Minimal overhead: +2 extra spiders.
+	\ZXGraph[labels=show]{
+		\Node[type=X, identifier=S1]{( 0, 0)}
+		\Node[type=X, identifier=S2]{(+3,-3)}
+
+		\Node[type=X, identifier=E1]{( 0,-1)}
+		\Node[type=X, identifier=E2]{( 0,-2)}
+		\Node[type=Z, identifier=E3]{(+1,-2)}
+		\Node[type=X, identifier=E4]{(+1.7,-1.3)}
+		\Node[type=Z, identifier=E5]{(+1.7,-2.3)}
+		\Node[type=X, identifier=E6]{(+2.7,-2.3)}
+		\Node[type=X, identifier=E7]{(+2,-3)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=X]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=Y]{E5}{E6}
+		\Edge[axis=X]{E6}{E7}
+		\Edge[axis=Y]{E7}{S2}
+	}{
+		\Plane[node=S1, normal=X]{}
+		\Plane[node=S2, normal=Z]{}
+
+		\foreach \N in {E1,E2,E5}{
+			\Plane[node=\N, normal=X]{}
+		}
+
+		\foreach \N in {E4}{
+			\Plane[node=\N, normal=Y]{}
+		}
+
+		\foreach \N in {E3,E6,E7}{
+			\Plane[node=\N, normal=Z]{}
+		}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) has OMD=10. Minimal overhead: +4 extra spiders.
+	\ZXGraph[labels=show]{
+		\Node[type=X, identifier=S1]{( 0, 0)}
+		\Node[type=X, identifier=S2]{(+3,-3)}
+
+		\Node[type=X, identifier=E1]{( 0,-1)}
+		\Node[type=X, identifier=E2]{( 0,-2)}
+		\Node[type=Z, identifier=E3]{(+1,-2)}
+		\Node[type=X, identifier=E4]{(+1.7,-1.3)}
+		\Node[type=Z, identifier=E5]{(+1.7,-2.3)}
+		\Node[type=Z, identifier=E6]{(+2.7,-2.3)}
+		\Node[type=Z, identifier=E7]{(+3.7,-2.3)}
+		\Node[type=X, identifier=E8]{(+4.7,-2.3)}
+		\Node[type=X, identifier=E9]{(+4,-3)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=X]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=Y]{E5}{E6}
+		\Edge[axis=Y]{E6}{E7}
+		\Edge[axis=Y]{E7}{E8}
+		\Edge[axis=X]{E8}{E9}
+		\Edge[axis=Y]{E9}{S2}
+	}{
+		\Plane[node=S1, normal=X]{}
+		\Plane[node=S2, normal=Z]{}
+
+		\foreach \N in {E1,E2,E5,E6,E7}{
+			\Plane[node=\N, normal=X]{}
+		}
+
+		\foreach \N in {E4}{
+			\Plane[node=\N, normal=Y]{}
+		}
+
+		\foreach \N in {E3,E8,E9}{
+			\Plane[node=\N, normal=Z]{}
+		}
+	}
+
+\end{document}
