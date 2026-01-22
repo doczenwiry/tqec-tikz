@@ -17,18 +17,22 @@
 	\define@key{sca:main}{order}{\def\Order{#1}} % Distance = 2*Order + 1
 	\define@key{sca:main}{qubits}{\def\ShowQubits{#1}}
 	\define@key{sca:main}{labels}{\def\ShowLabels{#1}}
+	% Needed to properly place the 2-qubit stabilizers.
+	% This can be inferred from the parity of the coordinates but I don't know how to do that in tikz-math.
+	\define@key{sca:main}{offset}{\def\Offset{#1}}
+	\define@key{sca:main}{coordinates}{\def\ShowCoordinates{#1}}
 	% Controls the offset of the 2-qubit stabilizers along the perimeter (0 or 1)
 	\define@key{sca:main}{perimeter}{\def\Perimeter{#1}}
 	% Controls whether there is a Hadamard flip on the surface code array
 	\define@key{sca:main}{hadamard}{\def\Hadamard{#1}}
-	\setkeys{sca:main}{qubits=show, labels=hide, perimeter=0, hadamard=0}
+
+	\setkeys{sca:main}{qubits=show, labels=hide, perimeter=0, hadamard=0, coordinates = hide}
 
 	\define@key{sca:qubit}{position}{\def\Position{#1}}
-	% Needed to properly place the 2-qubit stabilizers.
-	% This can be inferred from the parity of the coordinates but I don't know how to do that in tikz-math.
-	\define@key{sca:main}{offset}{\def\Offset{#1}}
 	\define@key{sca:qubit}{orderH}{\def\OrderH{#1}}
 	\define@key{sca:qubit}{orderW}{\def\OrderW{#1}}
+
+	\define@key{sca:gate}{type}{\def\GateType{#1}} % X or Z
 \makeatother
 
 \tikzmath{
@@ -144,7 +148,7 @@
 	};
 }
 
-\newcommand{\SurfaceCodeArray}[2][]{
+\newcommand{\SurfaceCodeArray}[3][]{
 	\begingroup
 		\setkeys{sca:main}{#1}
 		
@@ -164,6 +168,13 @@
 						Plaquette(\Distance, \Distance, \row, \col, 0.125);
 					};
 				};
+			}
+
+			% Draw the logical gates beneath the qubits
+			{#3}
+
+			\tikzmath{
+				integer \row, \col;
 				% Place Data qubits
 				for \row in {1,...,\Distance} {
 					for \col in {1,...,\Distance} {
@@ -171,6 +182,9 @@
 							\ifthenelse{\equal{\ShowQubits}{show}}{
 								\fill[white] (\col, \row) circle (2.5pt);
 								\fill[darkgray!25] (\col, \row) circle (2pt);
+							}{}
+							\ifthenelse{\equal{\ShowCoordinates}{show}}{
+								\node at (\col, \row) {\tiny\bf\tt (\col,\row)};
 							}{}
 						};
 					};
@@ -217,5 +231,16 @@
 				};
 			}
 		\end{scope}
+	\endgroup
+}
+
+\newcommand{\LogicalGate}[3][]{
+	\begingroup
+		\setkeys{sca:gate}{#1}
+
+		\def\Source{#2}
+		\def\Target{#3}
+
+		\draw[\GateType, line width = 7pt, line cap = round] \Source -- \Target;
 	\endgroup
 }

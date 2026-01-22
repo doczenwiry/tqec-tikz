@@ -1,0 +1,18 @@
+\documentclass[tikz, preview, border=2pt]{standalone}
+
+\input{../tikz-surface-code-array.tex}
+
+\begin{document}
+	\SurfaceCodeArray[order = 3, coordinates = show]{
+		% No qubits
+	}{
+		\LogicalGate[type=X]{(4,1)}{(4,7)}
+	}
+
+	\SurfaceCodeArray[order = 3]{
+		% No qubits
+	}{
+		\LogicalGate[type=Z]{(1, 5)}{(7, 5)}
+	}
+
+\end{document}
