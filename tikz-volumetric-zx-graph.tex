@@ -6,6 +6,7 @@
 
 \usepackage{tikz}
 
+\tikzstyle{border}=[black, line width=0.25pt]
 \tikzstyle{edge}=[line cap = round, ultra thick]
 \tikzstyle{identity}=[darkgray!90]
 \tikzstyle{hadamard}=[yellow!75!black!75]
@@ -19,80 +20,164 @@
 
 \tikzset{
 	% Graph parameters
+	zx/graph/style/.store in=\GraphNodeStyle, % global style for all nodes; spider or cube
 	zx/graph/labels/.initial=hide,
 	zx/graph/labels/.store in=\ShowNodeLabels,
-	% Cube parameters
-	zx/cube/labels/.store in=\ShowCubeLabels,
-	zx/cube/x/.store in=\ColorX,
-	zx/cube/y/.store in=\ColorY,
-	zx/cube/z/.store in=\ColorZ,
 	% Node parameters
-	zx/node/type/.initial=R,
-	zx/node/type/.store in=\NodeType,
-	zx/node/identifier/.store in=\Identifier,
+	zx/node/kind/.store in=\NodeKind, % XZZ, ZXZ, ZZX, ZXX, XZX or XXZ
+	zx/node/type/.initial=X,
+	zx/node/type/.store in=\NodeType, % corresponds red and blue spiders; X, Z or O (boundary)
+	zx/node/plane/.store in=\NodePlane, % plane in which the legs lie; X, Y or Z
+	zx/node/style/.store in=\NodeStyle, % specific style for this node; spider or cube
+	zx/node/labels/.store in=\ShowNodeLabels, % whether to display the identifier on the node
+	zx/node/identifier/.store in=\Identifier, % used to connect edges
 	% Edge parameters
-	zx/edge/axis/.store in=\EdgeAxis, % Edge represents a change of +1/-1 between two adjacent spiders along an axis
-	zx/edge/type/.store in=\EdgeType, % Edge can be identity or hadamard
-	% Plane parameters
-	zx/plane/node/.store in=\Identifier,
-	zx/plane/normal/.store in=\NormalVector
-}
-
-\newcommand{\Cube}[2][]{
-	\begingroup
-		\tikzset{zx/cube/.cd, #1}
-
-		\coordinate (center) at #2;
-
-		\fill[\ColorX] (center) -- +(270: 0.175) -- +(210: 0.175) -- +(150 : 0.175);
-		\fill[\ColorY] (center) -- +(30: 0.175) -- +(-30 : 0.175) -- +(270: 0.175);
-		\fill[\ColorZ] (center) -- +(150: 0.175) -- +(90: 0.175) -- +(30 : 0.175);
-
-		\draw[draw=black, line width = 0.25pt] (center) -- +( 30: 0.175);
-		\draw[draw=black, line width = 0.25pt] (center) -- +(150: 0.175);
-		\draw[draw=black, line width = 0.25pt] (center) -- +(270: 0.175);
-
-		\draw[draw=black, line width = 0.25pt] ([shift={(30:0.175)}] center) -- +(150: 0.175);
-		\draw[draw=black, line width = 0.25pt] ([shift={(30:0.175)}] center) -- +(270: 0.175);
-
-		\draw[draw=black, line width = 0.25pt] ([shift={(150:0.175)}] center) -- +( 30: 0.175);
-		\draw[draw=black, line width = 0.25pt] ([shift={(150:0.175)}] center) -- +(270: 0.175);
-
-		\draw[draw=black, line width = 0.25pt] ([shift={(270:0.175)}] center) -- +( 30: 0.175);
-		\draw[draw=black, line width = 0.25pt] ([shift={(270:0.175)}] center) -- +(150: 0.175);
-
-		\ifdefined\ShowCubeLabels
-			\IfStrEqCase{\ShowCubeLabels}{
-				{show}{
-					\node at ([shift={( 90: 0.0875)}] center) {\scriptsize\tt Z};
-					\node at ([shift={(210: 0.0875)}] center) {\scriptsize\tt X};
-					\node at ([shift={(330: 0.0875)}] center) {\scriptsize\tt Y};
-				}
-			}
-		\fi
-	\endgroup
+	zx/edge/axis/.store in=\EdgeAxis, % Edge represents change of +1/-1 between two adjacent nodes along an axis
+	zx/edge/type/.store in=\EdgeType, % identity or hadamard
 }
 
 \newcommand{\Node}[2][]{
 	\begingroup
 		\tikzset{zx/node/.cd, #1}
 
+		% Set empty identifier if none provided
+		\ifdefined\Identifier\else
+			\def\Identifier{}
+		\fi
+
+		% Use global node style if no specific node style provided
+		\ifdefined\NodeStyle\else
+			\def\NodeStyle{\GraphNodeStyle}
+		\fi
+
+		% Prepare the coordinate of the center of the node
 		\coordinate (node\Identifier) at #2;
-
-		\ifthenelse{\equal{\NodeType}{O}}{
-			\fill[\NodeType] (node\Identifier) circle (2pt);
-		}{
-			\fill[\NodeType] (node\Identifier) circle (3pt);
-		}
-
 		\node (\Identifier) at (node\Identifier) {};
-		\ifdefined\ShowNodeLabels
-			\IfStrEqCase{\ShowNodeLabels}{
-				{show}{\node[white, scale=0.25] at (node\Identifier) {\tt\Identifier};}
-				{hide}{}
+
+		% Derive node kind from type/plane and vice-versa
+		% TODO: warning when kind and type/plane are both provided
+		% TODO: error when kind and type/plane are conflicting specifications
+		\ifdefined\NodeKind
+			\IfStrEqCase{\NodeKind}{
+				{XXX}{\def\NodeType{X}\def\NodePlane{U}}
+				{ZZZ}{\def\NodeType{Z}\def\NodePlane{U}}
+				{XZZ}{\def\NodeType{X}\def\NodePlane{X}}
+				{ZXZ}{\def\NodeType{X}\def\NodePlane{Y}}
+				{ZZX}{\def\NodeType{X}\def\NodePlane{Z}}
+				{ZXX}{\def\NodeType{Z}\def\NodePlane{X}}
+				{XZX}{\def\NodeType{Z}\def\NodePlane{Y}}
+				{XXZ}{\def\NodeType{Z}\def\NodePlane{Z}}
+				{OOO}{\def\NodeType{O}}
+				{XYZ}{}
+			}
+		\else
+			\IfStrEqCase{\NodeType}{
+				{X}{
+					\ifdefined\NodePlane
+						\IfStrEqCase{\NodePlane}{
+							{X}{\def\NodeKind{XZZ}}
+							{Y}{\def\NodeKind{ZXZ}}
+							{Z}{\def\NodeKind{ZZX}}
+							{U}{\def\NodeKind{XXX}}
+						}
+					\else
+						\def\NodeKind{XXX}
+					\fi
+				}
+				{Z}{
+					\ifdefined\NodePlane
+						\IfStrEqCase{\NodePlane}{
+							{X}{\def\NodeKind{ZXX}}
+							{Y}{\def\NodeKind{XZX}}
+							{Z}{\def\NodeKind{XXZ}}
+							{U}{\def\NodeKind{ZZZ}}
+						}
+					\else
+						\def\NodeKind{ZZZ}
+					\fi
+				}
+				{O}{
+					\def\NodeKind{OOO}
+				}
 			}
 		\fi
 
+		\IfStrEqCase{\NodeStyle}{
+			{spider}{
+				% Draw spider disk
+				\ifthenelse{\equal{\NodeType}{O}}{
+					\fill[\NodeType] (node\Identifier) circle (2pt);
+				}{
+					\fill[\NodeType] (node\Identifier) circle (3pt);
+				}
+			
+				% Place label on spider
+				\ifdefined\ShowNodeLabels
+					\IfStrEqCase{\ShowNodeLabels}{
+						{show}{\node[white, scale=0.25] at (node\Identifier) {\tt\Identifier};}
+						{hide}{}
+					}
+				\fi
+			
+				% Draw spider plane constraint
+				\ifdefined\NodePlane
+					\draw[\NodePlane, line width = 1pt] (node\Identifier) circle (4pt);
+				\fi
+			}
+			{cube}{
+				\def\CubeOpacity{1.0}
+				\IfStrEqCase{\NodeKind}{
+					{XXX}{\def\ColorX{X}\def\ColorY{X}\def\ColorZ{X}\def\CubeOpacity{0.4}}
+					{ZZZ}{\def\ColorX{Z}\def\ColorY{Z}\def\ColorZ{Z}\def\CubeOpacity{0.4}}
+					{XZZ}{\def\ColorX{X}\def\ColorY{Z}\def\ColorZ{Z}}
+					{ZXZ}{\def\ColorX{Z}\def\ColorY{X}\def\ColorZ{Z}}
+					{ZZX}{\def\ColorX{Z}\def\ColorY{Z}\def\ColorZ{X}}
+					{ZXX}{\def\ColorX{Z}\def\ColorY{X}\def\ColorZ{X}}
+					{XZX}{\def\ColorX{X}\def\ColorY{Z}\def\ColorZ{X}}
+					{XXZ}{\def\ColorX{X}\def\ColorY{X}\def\ColorZ{Z}}
+					{XYZ}{\def\ColorX{X}\def\ColorY{Y}\def\ColorZ{Z}}
+					{OOO}{\def\ColorX{gray}\def\ColorY{gray}\def\ColorZ{gray}}
+				}
+		
+				% Draw cube faces
+				\ifdefined\NodeType
+					\ifthenelse{\equal{\NodeType}{O}}{
+						\def\CubeSize{0.10}
+					}{
+						\def\CubeSize{0.15}
+					}
+				\else
+					\def\CubeSize{0.15}
+				\fi
+				\def\CubeLabelOffset{0.075}
+				\fill[\ColorX, opacity = \CubeOpacity] (node\Identifier) -- +(270: \CubeSize) -- +(210: \CubeSize) -- +(150 : \CubeSize);
+				\fill[\ColorY, opacity = \CubeOpacity] (node\Identifier) -- +(30: \CubeSize) -- +(-30 : \CubeSize) -- +(270: \CubeSize);
+				\fill[\ColorZ, opacity = \CubeOpacity] (node\Identifier) -- +(150: \CubeSize) -- +(90: \CubeSize) -- +(30 : \CubeSize);
+
+				% Draw all black borders
+				\draw[border, opacity = \CubeOpacity] (node\Identifier) -- +( 30: \CubeSize);
+				\draw[border, opacity = \CubeOpacity] (node\Identifier) -- +(150: \CubeSize);
+				\draw[border, opacity = \CubeOpacity] (node\Identifier) -- +(270: \CubeSize);
+
+				\draw[border, opacity = \CubeOpacity]
+					   ([shift={( 30: \CubeSize)}] node\Identifier) -- ([shift={( 90: \CubeSize)}] node\Identifier)
+					-- ([shift={(150: \CubeSize)}] node\Identifier) -- ([shift={(210: \CubeSize)}] node\Identifier)
+					-- ([shift={(270: \CubeSize)}] node\Identifier) -- ([shift={(330: \CubeSize)}] node\Identifier)
+					-- cycle;
+
+				% TODO: Adapt to other than XYZ
+				\ifdefined\ShowNodeLabels
+					\IfStrEqCase{\ShowNodeLabels}{
+						{show}{
+							\node at ([shift={( 90: \CubeLabelOffset)}] node\Identifier) {\scalebox{0.25}{\tt\ColorZ}};
+							\node at ([shift={(210: \CubeLabelOffset)}] node\Identifier) {\scalebox{0.25}{\tt\ColorX}};
+							\node at ([shift={(330: \CubeLabelOffset)}] node\Identifier) {\scalebox{0.25}{\tt\ColorY}};
+						}
+						{hide}{}
+					}
+				\fi
+			}
+		}
 	\endgroup
 }
 
@@ -111,17 +196,12 @@
 	\endgroup
 }
 
-\newcommand{\Plane}[2][]{
-	\begingroup
-		\tikzset{zx/plane/.cd, #1}
-
-		\draw[\NormalVector, line width = 1pt] (node\Identifier) circle (4pt);
-	\endgroup
-}
-
 \newcommand{\ZXGraph}[2][]{
 	\begingroup
 		\tikzset{zx/graph/.cd, #1}
+		\ifdefined\GraphNodeStyle\else
+			\def\GraphNodeStyle{spider}
+		\fi
 		\begin{tikzpicture}
 			{#2} % Layout of the ZX-Graph (i.e. nodes and edges) along with plane-constraints
 		\end{tikzpicture}
@@ -131,30 +211,7 @@
 % Correspondence between BlockGraph and Volumetric ZX-Graph notation.
 \newcommand{\Legend}{
 	\ZXGraph[labels=hide]{
-		\Node[type=X, identifier=XZZ]{(0,+1.0)}
-		\node at (0.375, 1) {$\equiv$};
-		\Cube[x=X,y=Z,z=Z]{(0.75, 1.0)}
-
-		\Node[type=X, identifier=ZXZ]{(0,+0.5)}
-		\node at (0.375,0.5) {$\equiv$};
-		\Cube[x=Z,y=X,z=Z]{(0.75, 0.5)}
-
-		\Node[type=X, identifier=ZZX]{(0, 0.0)}
-		\node at (0.375,0.0) {$\equiv$};
-		\Cube[x=Z,y=Z,z=X]{(0.75, 0.0)}
-
-		\Node[type=Z, identifier=ZXX]{(1.5,+1.0)}
-		\node at (1.875, 1) {$\equiv$};
-		\Cube[x=Z,y=X,z=X]{(2.25, 1.0)}
-
-		\Node[type=Z, identifier=XZX]{(1.5,+0.5)}
-		\node at (1.875,0.5) {$\equiv$};
-		\Cube[x=X,y=Z,z=X]{(2.25, 0.5)}
-
-		\Node[type=Z, identifier=XXZ]{(1.5, 0.0)}
-		\node at (1.875,0.0) {$\equiv$};
-		\Cube[x=X,y=X,z=Z]{(2.25, 0.0)}
-
+		% Summary of planes, axes and associated colours
 		\begin{scope}[scale=2]
 			\draw[-stealth] (-0.5, 0.25) -- +(210 : 0.3);
 			\node at ([shift={(210: 0.35)}] -0.5, 0.25) {\tiny $x$};
@@ -165,16 +222,65 @@
 			\draw[-stealth] (-0.5, 0.25) -- +(90: 0.3);
 			\node at ([shift={(90: 0.35)}] -0.5, 0.25) {\tiny $z$};
 
-			\Cube[x=X,y=Y,z=Z, labels=show]{(-0.5, +0.25)}
+			\Node[kind=XYZ, style=cube, labels=show]{(-0.5, +0.25)}
 		\end{scope}
 
-		% Plane constraints
-		\Plane[node=XZZ, normal=X]{}
-		\Plane[node=ZXZ, normal=Y]{}
-		\Plane[node=ZZX, normal=Z]{}
-		\Plane[node=ZXX, normal=X]{}
-		\Plane[node=XZX, normal=Y]{}
-		\Plane[node=XXZ, normal=Z]{}
+		% Correspondence between spiders w/ plane constraints and cube kinds
+		\begin{scope}[shift={(0,0)}]
+			% Type X
+			\Node[kind=XZZ, identifier=XZZ]{(0,+1.0)}
+			\node at (0.375, 1) {$\equiv$};
+			\Node[kind=XZZ, style=cube]{(0.75, 1.0)}
+	
+			\Node[kind=ZXZ, identifier=ZXZ]{(0,+0.5)}
+			\node at (0.375,0.5) {$\equiv$};
+			\Node[kind=ZXZ, style=cube]{(0.75, 0.5)}
+	
+			\Node[kind=ZZX, identifier=ZZX]{(0, 0.0)}
+			\node at (0.375,0.0) {$\equiv$};
+			\Node[kind=ZZX, style=cube]{(0.75, 0.0)}
+		\end{scope}
+
+		\begin{scope}[shift={(1.5,0)}]
+			% Type Z
+			\Node[kind=ZXX, identifier=ZXX]{(0.0, 1.0)}
+			\node at (0.375, 1) {$\equiv$};
+			\Node[kind=ZXX, style=cube]{(0.75, 1.0)}
+	
+			\Node[kind=XZX, identifier=XZX]{(0.0, 0.5)}
+			\node at (0.375,0.5) {$\equiv$};
+			\Node[kind=XZX, style=cube]{(0.75, 0.5)}
+	
+			\Node[kind=XXZ, identifier=XXZ]{(0.0, 0.0)}
+			\node at (0.375,0.0) {$\equiv$};
+			\Node[kind=XXZ, style=cube]{(0.75, 0.0)}
+		\end{scope}
+
+		% Special cases of spider w/o plane constraints with adhoc cube kind
+		\begin{scope}[shift={(-1.5,-0.5)}]
+			% Kind XXX
+			\Node[kind=XXX]{(0, 0.0)}
+			\node at (0.3750, 0.0) {$\equiv$};
+			\Node[kind=XXX, style=cube]{(0.750, 0.0)}
+			\node at (1.1250, 0.0) {$\equiv$};
+			\Node[kind=XZZ, style=cube]{(1.500, 0.0)}
+			\node at (1.6875, 0.0) {$|$};
+			\Node[kind=ZXZ, style=cube]{(1.875, 0.0)}
+			\node at (2.0625, 0.0) {$|$};
+			\Node[kind=ZZX, style=cube]{(2.250, 0.0)}
+		\end{scope}
+		\begin{scope}[shift={(1.5,-0.5)}]
+			% Kind ZZZ
+			\Node[kind=ZZZ]{(0,0.0)}
+			\node at (0.3750, 0.0) {$\equiv$};
+			\Node[kind=ZZZ, style=cube]{(0.750, 0.0)}
+			\node at (1.1250, 0.0) {$\equiv$};
+			\Node[kind=ZXX, style=cube]{(1.500, 0.0)}
+			\node at (1.6875, 0.0) {$|$};
+			\Node[kind=XZX, style=cube]{(1.875, 0.0)}
+			\node at (2.0625, 0.0) {$|$};
+			\Node[kind=XXZ, style=cube]{(2.250, 0.0)}
+		\end{scope}
 
 		% Edge description
 		\coordinate (nodeX0) at (3.25, 1.25);
@@ -182,8 +288,8 @@
 		\Edge[axis=X]{X0}{X1}
 		\node at (3.75, 1.0) {\scalebox{0.6}{$\delta_{\scriptscriptstyle x} = \pm 1$}};
 
-		\coordinate (nodeY0) at (2.65, 0.5);
-		\coordinate (nodeY1) at (3.35, 0.5);
+		\coordinate (nodeY0) at (3.25, 0.25);
+		\coordinate (nodeY1) at (2.75, 0.75);
 		\Edge[axis=Y]{Y0}{Y1}
 		\node at (3.75, 0.5) {\scalebox{0.6}{$\delta_{\scriptscriptstyle y} = \pm 1$}};
 

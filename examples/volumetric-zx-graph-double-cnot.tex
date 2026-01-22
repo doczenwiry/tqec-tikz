@@ -38,8 +38,6 @@
 
 		\Edge{X1}{Z1}
 		\Edge{Z2}{X2}
-
-		% No plane constraints
 	}
 
 	% Double-CNOT (w. initial plane constraints)
@@ -50,11 +48,11 @@
 		\Node[type=O, identifier=B3]{(+2.6,+1.6)}
 		\Node[type=O, identifier=B4]{(+3,-1)}
 
-		\Node[type=Z, identifier=Z1]{(+1, 0)}
-		\Node[type=X, identifier=X1]{(+1,-1)}
+		\Node[type=Z, plane=Y, identifier=Z1]{(+1, 0)}
+		\Node[type=X, plane=X, identifier=X1]{(+1,-1)}
 
-		\Node[type=Z, identifier=Z2]{(+2,-1)}
-		\Node[type=X, identifier=X2]{(+1.8,+0.8)}
+		\Node[type=Z, plane=Z, identifier=Z2]{(+2,-1)}
+		\Node[type=X, plane=Z, identifier=X2]{(+1.8,+0.8)}
 
 		\Edge[axis=Z]{B1}{Z1}
 		\Edge[axis=Y]{X1}{Z2}
@@ -70,13 +68,6 @@
 		% Given the colors and planes assigned to X1, Z1 and Z2, the shortest path between spiders Z2 and X2
 		% has a Manhattan Distance of at least 3, which means two extra spiders are needed.
 		\Edge[axis=U]{Z2}{X2}
-
-		% Plane constraints
-		\Plane[node=Z1, normal=Y]{}
-		\Plane[node=X1, normal=X]{}
-
-		\Plane[node=X2, normal=Z]{}
-		\Plane[node=Z2, normal=Z]{}
 	}
 
 	% Double-CNOT (w. initial plane constraints)
@@ -87,11 +78,11 @@
 		\Node[type=O, identifier=B3]{(+2.6,+1.6)}
 		\Node[type=O, identifier=B4]{(+3,-1)}
 
-		\Node[type=Z, identifier=Z1]{(+1, 0)}
-		\Node[type=X, identifier=X1]{(+1,-1)}
+		\Node[type=Z, plane=Y, identifier=Z1]{(+1, 0)}
+		\Node[type=X, plane=X, identifier=X1]{(+1,-1)}
 
-		\Node[type=Z, identifier=Z2]{(+2,-1)}
-		\Node[type=X, identifier=X2]{(+1.8,+0.8)}
+		\Node[type=Z, plane=Z, identifier=Z2]{(+2,-1)}
+		\Node[type=X, plane=Z, identifier=X2]{(+1.8,+0.8)}
 
 		\Edge[axis=Z]{B1}{Z1}
 		\Edge[axis=Y]{X1}{Z2}
@@ -105,22 +96,12 @@
 
 		% The colours of the two extra spiders (i.e. E1, E2) can be inferred from the plane constraints
 		% along with the colours of their respective neighbour.
-		\Node[type=X, identifier=E1]{(+2.8,+0.8)}
-		\Node[type=Z, identifier=E2]{(+2.8,-0.2)}
+		\Node[type=X, plane=X, identifier=E1]{(+2.8,+0.8)}
+		\Node[type=Z, plane=Y, identifier=E2]{(+2.8,-0.2)}
 
 		\Edge[axis=Y]{X2}{E1}
 		\Edge[axis=Z]{E1}{E2}
 		\Edge[axis=X]{E2}{Z2}
-
-		% Plane constraints
-		\Plane[node=Z1, normal=Y]{}
-		\Plane[node=X1, normal=X]{}
-
-		\Plane[node=X2, normal=Z]{}
-		\Plane[node=Z2, normal=Z]{}
-
-		\Plane[node=E1, normal=X]{}
-		\Plane[node=E2, normal=Y]{}
 	}
 
 \end{document}

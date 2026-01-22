@@ -37,16 +37,14 @@
 		\Edge{S2}{B2}
 		\Edge{S3}{B3}
 		\Edge{S4}{B4}
-
-		% No plane constraints
 	}
 
 	% Clique of four spiders (4 Red). [Symmetric with 4 Blue]
 	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, identifier=S2]{( 0,-1)}
-		\Node[type=X, identifier=S3]{( 1, 0)}
-		\Node[type=X, identifier=S4]{( 1,-1)}
+		\Node[type=X, plane=U, identifier=S1]{( 0, 0)}
+		\Node[type=X, plane=U, identifier=S2]{( 0,-1)}
+		\Node[type=X, plane=U, identifier=S3]{( 1, 0)}
+		\Node[type=X, plane=U, identifier=S4]{( 1,-1)}
 
 		\Node[type=O, identifier=B1]{(-1, 0)}
 		\Node[type=O, identifier=B2]{(-1,-1)}
@@ -64,12 +62,6 @@
 		\Edge[axis=U]{S2}{B2}
 		\Edge[axis=U]{S3}{B3}
 		\Edge[axis=U]{S4}{B4}
-
-		% Plane constraints
-		\Plane[node=S1, normal=U]{}
-		\Plane[node=S2, normal=U]{}
-		\Plane[node=S3, normal=U]{}
-		\Plane[node=S4, normal=U]{}
 	}
 
 	% Clique of four spiders (3 Red, 1 Blue). [Symmetric with 3 Blue, 1 Red]
@@ -95,16 +87,14 @@
 		\Edge{S2}{B2}
 		\Edge{S3}{B3}
 		\Edge{S4}{B4}
-
-		% No plane constraints
 	}
 
 	% Clique of four spiders (3 Red, 1 Blue). [Symmetric with 3 Blue, 1 Red]
 	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, identifier=S2]{( 0,-1)}
-		\Node[type=X, identifier=S3]{( 1, 0)}
-		\Node[type=Z, identifier=S4]{( 1,-1)}
+		\Node[type=X, plane=U, identifier=S1]{( 0, 0)}
+		\Node[type=X, plane=U, identifier=S2]{( 0,-1)}
+		\Node[type=X, plane=U, identifier=S3]{( 1, 0)}
+		\Node[type=Z, plane=U, identifier=S4]{( 1,-1)}
 
 		\Node[type=O, identifier=B1]{(-1, 0)}
 		\Node[type=O, identifier=B2]{(-1,-1)}
@@ -122,12 +112,6 @@
 		\Edge[axis=U]{S2}{B2}
 		\Edge[axis=U]{S3}{B3}
 		\Edge[axis=U]{S4}{B4}
-
-		% Plane constraints
-		\Plane[node=S1, normal=U]{}
-		\Plane[node=S2, normal=U]{}
-		\Plane[node=S3, normal=U]{}
-		\Plane[node=S4, normal=U]{}
 	}
 
 	% Clique of four spiders (2 Red, 2 Blue).
@@ -153,8 +137,6 @@
 		\Edge{S2}{B2}
 		\Edge{S3}{B3}
 		\Edge{S4}{B4}
-
-		% No plane constraints
 	}
 
 \end{document}

@@ -14,40 +14,37 @@
 % This means they are not adjacent in 3D and require a sequence of edges to connect them.
 
 \begin{document}
-	% Two RED spiders with distances (1, 0, 0)
-	% Optimal Manhattan Distance = 1; Minimal overhead: none.
+	\Legend{}
+
+	% Two neighbouring RED spiders
 	\ZXGraph[labels=show]{
 		\Node[type=X, identifier=S1]{( 0, 0)}
 		\Node[type=X, identifier=S2]{(+1, 0)}
 
 		\Edge{S1}{S2}
-	}{
-		% No plane constraints
 	}
 
-	% Two RED spiders in same PLANE with distances (1, 0, 0) has Opt. MD=6. Minimal overhead: none.
+	% Two RED spiders in same PLANE with distances (0, 1, 0)
+	% Optimal Manhattan Distance = 1. Overhead: none.
 	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, identifier=S2]{(+1, 0)}
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
+		\Node[type=X, plane=X, identifier=S2]{(+1, 0)}
 
 		\Edge[axis=Y]{S1}{S2}
-	}{
-		\Plane[node=S1, normal=X]{}
-		\Plane[node=S2, normal=X]{}
 	}
 
-	% Two RED spiders in different PLANE with distances (1, 0, 0)
-	% Optimal Manhattan Distance = 7; overhead: +6.
+	% RED and BLUE spiders in same PLANE with distances (0, 1, 0)
+	% Optimal Manhattan Distance = 7. Overhead: +6.
 	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=Z, identifier=S2]{(+1, 0)}
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{([shift={(-30: 1)}] nodeS1)}
 
-		\Node[type=X, identifier=E1]{( 0.0, +1.0)}
-		\Node[type=Z, identifier=E2]{( 0.0, +2.0)}
-		\Node[type=X, identifier=E3]{( 0.7, +2.7)}
-		\Node[type=Z, identifier=E4]{( 1.7, +2.7)}
-		\Node[type=X, identifier=E5]{( 1.7, +1.7)}
-		\Node[type=X, identifier=E6]{( 1.0, +1.0)}
+		\Node[type=X, plane=X, identifier=E1]{([shift={( 90: 1)}] nodeS1)}
+		\Node[type=Z, plane=Y, identifier=E2]{([shift={( 90: 1)}] nodeE1)}
+		\Node[type=X, plane=Z, identifier=E3]{([shift={( 30: 1)}] nodeE2)}
+		\Node[type=Z, plane=X, identifier=E4]{([shift={(-30: 1)}] nodeE3)}
+		\Node[type=X, plane=Y, identifier=E5]{([shift={(-90: 1)}] nodeE4)}
+		\Node[type=X, plane=Y, identifier=E6]{([shift={(210: 1)}] nodeE5)}
 
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=Z]{E1}{E2}
@@ -56,17 +53,26 @@
 		\Edge[axis=Z]{E4}{E5}
 		\Edge[axis=X]{E5}{E6}
 		\Edge[axis=Z]{E6}{S2}
+	}
 
-	}{
-		\Plane[node=S1, normal=X]{}
-		\Plane[node=S2, normal=X]{}
+	\ZXGraph[style=cube]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{([shift={(-30: 1)}] nodeS1)}
 
-		\Plane[node=E1, normal=X]{}
-		\Plane[node=E2, normal=Y]{}
-		\Plane[node=E3, normal=Z]{}
-		\Plane[node=E4, normal=X]{}
-		\Plane[node=E5, normal=Y]{}
-		\Plane[node=E6, normal=Y]{}
+		\Node[type=X, plane=X, identifier=E1]{([shift={( 90: 1)}] nodeS1)}
+		\Node[type=Z, plane=Y, identifier=E2]{([shift={( 90: 1)}] nodeE1)}
+		\Node[type=X, plane=Z, identifier=E3]{([shift={( 30: 1)}] nodeE2)}
+		\Node[type=Z, plane=X, identifier=E4]{([shift={(-30: 1)}] nodeE3)}
+		\Node[type=X, plane=Y, identifier=E5]{([shift={(-90: 1)}] nodeE4)}
+		\Node[type=X, plane=Y, identifier=E6]{([shift={(210: 1)}] nodeE5)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=X]{E2}{E3}
+		\Edge[axis=Y]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=X]{E5}{E6}
+		\Edge[axis=Z]{E6}{S2}
 	}
 
 \end{document}
