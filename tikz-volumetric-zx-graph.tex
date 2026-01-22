@@ -175,5 +175,21 @@
 		\Plane[node=ZXX, normal=X]{}
 		\Plane[node=XZX, normal=Y]{}
 		\Plane[node=XXZ, normal=Z]{}
+
+		% Edge description
+		\coordinate (nodeX0) at (3.25, 1.25);
+		\coordinate (nodeX1) at (2.75, 0.75);
+		\Edge[axis=X]{X0}{X1}
+		\node at (3.75, 1.0) {\scalebox{0.6}{$\delta_{\scriptscriptstyle x} = \pm 1$}};
+
+		\coordinate (nodeY0) at (2.65, 0.5);
+		\coordinate (nodeY1) at (3.35, 0.5);
+		\Edge[axis=Y]{Y0}{Y1}
+		\node at (3.75, 0.5) {\scalebox{0.6}{$\delta_{\scriptscriptstyle y} = \pm 1$}};
+
+		\coordinate (nodeZ0) at (3, 0.35);
+		\coordinate (nodeZ1) at (3, -0.35);
+		\Edge[axis=Z]{Z0}{Z1}
+		\node at (3.75, 0.0) {\scalebox{0.6}{$\delta_{\scriptscriptstyle z} = \pm 1$}};
 	}
 }
