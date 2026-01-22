@@ -1,31 +1,41 @@
 \documentclass[tikz, preview, border=2pt]{standalone}
 
-\input{../tikz-surface-code-array.tex}
+\input{../../tikz-surface-code-array.tex}
 
 \begin{document}
 	\SurfaceCodeArray[order = 3]{
 		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
 		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+	}{
+		% No logical gates
 	}
 
 	\SurfaceCodeArray[order = 3]{
 		\LogicalQubit[order=1, position={(0,0)}, orderW=3, labels=show]{}
 		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+	}{
+		% No logical gates
 	}
 
 	\SurfaceCodeArray[order = 3]{
 		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
 		\LogicalQubit[order=1, position={(4,0)}, labels=show]{}
 		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+	}{
+		% No logical gates
 	}
 
 	\SurfaceCodeArray[order = 3]{
 		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
 		\LogicalQubit[order=1, position={(4,0)}, orderH=3, labels=show]{}
+	}{
+		% No logical gates
 	}
 
 	\SurfaceCodeArray[order = 3]{
 		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
 		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+	}{
+		% No logical gates
 	}
 \end{document}
