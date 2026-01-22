@@ -1,0 +1,83 @@
+\documentclass[tikz, preview, border=1pt]{standalone}
+
+\input{../tikz-volumetric-zx-graph.tex}
+
+% A spider with at most four legs must have all its leg in the same plane (X, Y or Z)
+
+%\sc Minimal length of path connecting:
+%\begin{itemize}
+%	\item Two adjacent spiders of the same color lying in the same plane : 1
+%	\item Two adjacent spiders of different colors lying in the same plane : 3
+%\end{itemize}
+
+% Assigning plane constraints may increase the Manhattan Distance between two spiders
+% This means they are not adjacent in 3D and require a sequence of edges to connect them.
+
+\begin{document}
+	% Clique of five spiders (5 Red). [Symmetric with 5 Blue]
+	\ZXGraph[labels=show]{
+		\Node[type=X, identifier=S1]{( 90:1cm)}
+		\Node[type=X, identifier=S2]{(162:1cm)}
+		\Node[type=X, identifier=S3]{(234:1cm)}
+		\Node[type=X, identifier=S4]{(306:1cm)}
+		\Node[type=X, identifier=S5]{( 18:1cm)}
+
+		\Edge{S1}{S2}
+		\Edge{S1}{S3}
+		\Edge{S1}{S4}
+		\Edge{S1}{S5}
+		\Edge{S2}{S3}
+		\Edge{S2}{S4}
+		\Edge{S2}{S5}
+		\Edge{S3}{S4}
+		\Edge{S3}{S5}
+		\Edge{S4}{S5}
+
+		% No plane constraints
+	}
+
+	% Clique of five spiders (4 Red, 1 Blue). [Symmetric with 4 Blue, 1 Red]
+	\ZXGraph[labels=show]{
+		\Node[type=X, identifier=S1]{( 90:1cm)}
+		\Node[type=X, identifier=S2]{(162:1cm)}
+		\Node[type=X, identifier=S3]{(234:1cm)}
+		\Node[type=X, identifier=S4]{(306:1cm)}
+		\Node[type=Z, identifier=S5]{( 18:1cm)}
+
+		\Edge{S1}{S2}
+		\Edge{S1}{S3}
+		\Edge{S1}{S4}
+		\Edge{S1}{S5}
+		\Edge{S2}{S3}
+		\Edge{S2}{S4}
+		\Edge{S2}{S5}
+		\Edge{S3}{S4}
+		\Edge{S3}{S5}
+		\Edge{S4}{S5}
+
+		% No plane constraints
+	}
+
+	% Clique of five spiders (3 Red, 2 Blue). [Symmetric with 3 Blue, 2 Red]
+	\ZXGraph[labels=show]{
+		\Node[type=X, identifier=S1]{( 90:1cm)}
+		\Node[type=X, identifier=S2]{(162:1cm)}
+		\Node[type=X, identifier=S3]{(234:1cm)}
+		\Node[type=Z, identifier=S4]{(306:1cm)}
+		\Node[type=Z, identifier=S5]{( 18:1cm)}
+
+		\Edge{S1}{S2}
+		\Edge{S1}{S3}
+		\Edge{S1}{S4}
+		\Edge{S1}{S5}
+		\Edge{S2}{S3}
+		\Edge{S2}{S4}
+		\Edge{S2}{S5}
+		\Edge{S3}{S4}
+		\Edge{S3}{S5}
+		\Edge{S4}{S5}
+
+		% No plane constraints
+	}
+
+\end{document}

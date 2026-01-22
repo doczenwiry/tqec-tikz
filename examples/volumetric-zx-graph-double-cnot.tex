@@ -1,94 +1,6 @@
 \documentclass[tikz, preview, border=1pt]{standalone}
 
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-
-\usepackage{ifthen}
-\usepackage{xstring}
-
-\usepackage{tikz}
-
-\tikzstyle{edge}=[line cap = round, ultra thick]
-\tikzstyle{identity}=[darkgray!90]
-\tikzstyle{hadamard}=[yellow!75!black!75]
-
-\tikzstyle{axis}=[line cap=round, thick]
-\tikzstyle{U}=[lightgray]
-\tikzstyle{X}=[  red!75!black!50]
-\tikzstyle{Y}=[green!75!black!50]
-\tikzstyle{Z}=[ blue!75!black!50]
-\tikzstyle{O}=[darkgray!90, line width = 1pt]
-
-\tikzset{
-	% Graph parameters
-	zx/graph/labels/.initial=hide,
-	zx/graph/labels/.store in=\ShowNodeLabels,
-	% Node parameters
-	zx/node/type/.initial=R,
-	zx/node/type/.store in=\NodeType,
-	zx/node/identifier/.store in=\Identifier,
-	% Edge parameters
-	zx/edge/axis/.store in=\EdgeAxis,
-	zx/edge/type/.store in=\EdgeType,
-	% Plane parameters
-	zx/plane/node/.store in=\Identifier,
-	zx/plane/orientation/.store in=\NormalVector
-}
-
-\newcommand{\Node}[2][]{
-	\begingroup
-		\tikzset{zx/node/.cd, #1}
-
-		\coordinate (node\Identifier) at #2;
-
-		\ifthenelse{\equal{\NodeType}{O}}{
-			\fill[\NodeType] (node\Identifier) circle (2pt);
-		}{
-			\fill[\NodeType] (node\Identifier) circle (3pt);
-		}
-
-		\node (\Identifier) at (node\Identifier) {};
-		\ifdefined\ShowNodeLabels
-			\IfStrEqCase{\ShowNodeLabels}{
-				{show}{\node[white, scale=0.25] at (node\Identifier) {\tt\Identifier};}
-				{hide}{}
-			}
-		\fi
-
-	\endgroup
-}
-
-\newcommand{\Edge}[3][]{
-	\begingroup
-		\tikzset{zx/edge/.cd, #1}
-		\ifdefined\EdgeType
-			\draw[edge, \EdgeType, shorten <= 6pt, shorten >= 6pt] (node#2) -- (node#3);
-		\else
-			\draw[edge, identity, shorten <= 6pt, shorten >= 6pt] (node#2) -- (node#3);
-		\fi
-		\ifdefined\EdgeAxis
-			\draw[edge, thick, \EdgeAxis, shorten <= 6pt, shorten >= 6pt] (node#2) -- (node#3);
-		\fi
-	\endgroup
-}
-
-\newcommand{\Plane}[2][]{
-	\begingroup
-		\tikzset{zx/plane/.cd, #1}
-
-		\draw[\NormalVector, line width = 1pt] (node\Identifier) circle (4pt);
-	\endgroup
-}
-
-\newcommand{\ZXGraph}[3][]{
-	\begingroup
-		\tikzset{zx/graph/.cd, #1}
-		\begin{tikzpicture}
-			{#2} % Layout of the ZX-Graph (i.e. nodes and edges)
-			{#3} % Draw plane-constraints on spiders
-		\end{tikzpicture}
-	\endgroup
-}
+\input{../tikz-volumetric-zx-graph.tex}
 
 %A spider with at most four legs must have all its leg in the same plane (X, Y or Z)
 
@@ -102,7 +14,6 @@
 % This means they are not adjacent in 3D and require a sequence of edges to connect them.
 
 \begin{document}
-
 	% Double-CNOT
 	\ZXGraph[labels=show]{
 		\Node[type=O, identifier=B1]{(0, 0)}
@@ -127,7 +38,7 @@
 
 		\Edge{X1}{Z1}
 		\Edge{Z2}{X2}
-	}{
+
 		% No plane constraints
 	}
 
@@ -159,12 +70,13 @@
 		% Given the colors and planes assigned to X1, Z1 and Z2, the shortest path between spiders Z2 and X2
 		% has a Manhattan Distance of at least 3, which means two extra spiders are needed.
 		\Edge[axis=U]{Z2}{X2}
-	}{
-		\Plane[node=Z1, orientation=Y]{}
-		\Plane[node=X1, orientation=X]{}
 
-		\Plane[node=X2, orientation=Z]{}
-		\Plane[node=Z2, orientation=Z]{}
+		% Plane constraints
+		\Plane[node=Z1, normal=Y]{}
+		\Plane[node=X1, normal=X]{}
+
+		\Plane[node=X2, normal=Z]{}
+		\Plane[node=Z2, normal=Z]{}
 	}
 
 	% Double-CNOT (w. initial plane constraints)
@@ -199,15 +111,16 @@
 		\Edge[axis=Y]{X2}{E1}
 		\Edge[axis=Z]{E1}{E2}
 		\Edge[axis=X]{E2}{Z2}
-	}{
-		\Plane[node=Z1, orientation=Y]{}
-		\Plane[node=X1, orientation=X]{}
 
-		\Plane[node=X2, orientation=Z]{}
-		\Plane[node=Z2, orientation=Z]{}
+		% Plane constraints
+		\Plane[node=Z1, normal=Y]{}
+		\Plane[node=X1, normal=X]{}
 
-		\Plane[node=E1, orientation=X]{}
-		\Plane[node=E2, orientation=Y]{}
+		\Plane[node=X2, normal=Z]{}
+		\Plane[node=Z2, normal=Z]{}
+
+		\Plane[node=E1, normal=X]{}
+		\Plane[node=E2, normal=Y]{}
 	}
 
 \end{document}

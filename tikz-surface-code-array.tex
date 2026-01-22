@@ -1,5 +1,3 @@
-\documentclass[tikz, preview, border=2pt]{standalone}
-
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 
@@ -19,7 +17,7 @@
 	\define@key{sca:main}{order}{\def\Order{#1}} % Distance = 2*Order + 1
 	\define@key{sca:main}{qubits}{\def\ShowQubits{#1}}
 	\define@key{sca:main}{labels}{\def\ShowLabels{#1}}
-	% Controls the offset of the 2-qubit stabilizers along the perimeter 
+	% Controls the offset of the 2-qubit stabilizers along the perimeter (0 or 1)
 	\define@key{sca:main}{perimeter}{\def\Perimeter{#1}}
 	% Controls whether there is a Hadamard flip on the surface code array
 	\define@key{sca:main}{hadamard}{\def\Hadamard{#1}}
@@ -221,34 +219,3 @@
 		\end{scope}
 	\endgroup
 }
-
-\begin{document}
-	\SurfaceCodeArray[order = 5]{
-		\LogicalQubit[order=1, position={(4,4)}]{}
-	}
-
-	\SurfaceCodeArray[order = 5]{
-		\LogicalQubit[order=1, orderW=5, position={(0,4)}]{}
-	}
-
-	\SurfaceCodeArray[order = 5]{
-		\LogicalQubit[order=1, position={(0,4)}]{}
-		\LogicalQubit[order=1, position={(4,4)}]{}
-		\LogicalQubit[order=1, position={(8,4)}]{}
-	}
-
-	\SurfaceCodeArray[order = 5]{
-		\LogicalQubit[order=1, position={(0,4)}]{}
-		\LogicalQubit[order=1, orderH=5, position={(4,0)}]{}
-		\LogicalQubit[order=1, position={(8,4)}]{}
-	}
-
-	\SurfaceCodeArray[order = 5]{
-		\LogicalQubit[order=1, position={(0,4)}]{}
-		\LogicalQubit[order=1, position={(4,0)}]{}
-		\LogicalQubit[order=1, position={(4,4)}]{}
-		\LogicalQubit[order=1, position={(4,8)}]{}
-		\LogicalQubit[order=1, position={(8,4)}]{}
-	}
-
-\end{document}
