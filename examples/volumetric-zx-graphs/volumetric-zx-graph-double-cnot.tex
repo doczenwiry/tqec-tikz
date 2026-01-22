@@ -15,18 +15,18 @@
 
 \begin{document}
 	% Double-CNOT
-	\ZXGraph[labels=show]{
-		\Node[type=O, identifier=B1]{(0, 0)}
-		\Node[type=O, identifier=B2]{(0,-1)}
+	\ZXGraph[labels=show, rotationX = 0, rotationZ = 0]{
+		\Node[type=O, identifier=B1]{(0, 0,  0)}
+		\Node[type=O, identifier=B2]{(0, 0, -1)}
 
-		\Node[type=O, identifier=B3]{(3, 0)}
-		\Node[type=O, identifier=B4]{(3,-1)}
+		\Node[type=O, identifier=B3]{(0, 3,  0)}
+		\Node[type=O, identifier=B4]{(0, 3, -1)}
 
-		\Node[type=X, identifier=X1]{(1,-1)}
-		\Node[type=Z, identifier=Z1]{(1, 0)}
+		\Node[type=X, identifier=X1]{(0, 1, -1)}
+		\Node[type=Z, identifier=Z1]{(0, 1,  0)}
 
-		\Node[type=Z, identifier=Z2]{(2,-1)}
-		\Node[type=X, identifier=X2]{(2, 0)}
+		\Node[type=Z, identifier=Z2]{(0, 2, -1)}
+		\Node[type=X, identifier=X2]{(0, 2,  0)}
 
 		\Edge{B1}{Z1}
 		\Edge{X1}{Z2}
@@ -41,18 +41,18 @@
 	}
 
 	% Double-CNOT (w. initial plane constraints)
-	\ZXGraph[labels=show]{
-		\Node[type=O, identifier=B1]{(+1,+1)}
-		\Node[type=O, identifier=B2]{( 0,-1)}
+	\ZXGraph[labels = show]{
+		\Node[type=O, identifier=B1]{(0,  0, 1)}
+		\Node[type=O, identifier=B2]{(0, -1,-1)}
 
-		\Node[type=O, identifier=B3]{(+2.6,+1.6)}
-		\Node[type=O, identifier=B4]{(+3,-1)}
+		\Node[type=O, identifier=B3]{(-2, 0, 0)}
+		\Node[type=O, identifier=B4]{( 0, 2,-1)}
 
-		\Node[type=Z, plane=Y, identifier=Z1]{(+1, 0)}
-		\Node[type=X, plane=X, identifier=X1]{(+1,-1)}
+		\Node[type=Z, plane=Y, identifier=Z1]{( 0, 0, 0)}
+		\Node[type=X, plane=X, identifier=X1]{( 0, 0,-1)}
 
-		\Node[type=Z, plane=Z, identifier=Z2]{(+2,-1)}
-		\Node[type=X, plane=Z, identifier=X2]{(+1.8,+0.8)}
+		\Node[type=Z, plane=Z, identifier=Z2]{( 0, 1,-1)}
+		\Node[type=X, plane=Z, identifier=X2]{(-1, 0, 0)}
 
 		\Edge[axis=Z]{B1}{Z1}
 		\Edge[axis=Y]{X1}{Z2}
@@ -70,19 +70,19 @@
 		\Edge[axis=U]{Z2}{X2}
 	}
 
-	% Double-CNOT (w. initial plane constraints)
+	% Double-CNOT (w. initial plane constraints and completed path)
 	\ZXGraph[labels=show]{
-		\Node[type=O, identifier=B1]{(+1,+1)}
-		\Node[type=O, identifier=B2]{( 0,-1)}
+		\Node[type=O, identifier=B1]{(0,  0, 1)}
+		\Node[type=O, identifier=B2]{(0, -1,-1)}
 
-		\Node[type=O, identifier=B3]{(+2.6,+1.6)}
-		\Node[type=O, identifier=B4]{(+3,-1)}
+		\Node[type=O, identifier=B3]{(-2, 0, 0)}
+		\Node[type=O, identifier=B4]{( 0, 2,-1)}
 
-		\Node[type=Z, plane=Y, identifier=Z1]{(+1, 0)}
-		\Node[type=X, plane=X, identifier=X1]{(+1,-1)}
+		\Node[type=Z, plane=Y, identifier=Z1]{( 0, 0, 0)}
+		\Node[type=X, plane=X, identifier=X1]{( 0, 0,-1)}
 
-		\Node[type=Z, plane=Z, identifier=Z2]{(+2,-1)}
-		\Node[type=X, plane=Z, identifier=X2]{(+1.8,+0.8)}
+		\Node[type=Z, plane=Z, identifier=Z2]{( 0, 1,-1)}
+		\Node[type=X, plane=Z, identifier=X2]{(-1, 0, 0)}
 
 		\Edge[axis=Z]{B1}{Z1}
 		\Edge[axis=Y]{X1}{Z2}
@@ -96,8 +96,42 @@
 
 		% The colours of the two extra spiders (i.e. E1, E2) can be inferred from the plane constraints
 		% along with the colours of their respective neighbour.
-		\Node[type=X, plane=X, identifier=E1]{(+2.8,+0.8)}
-		\Node[type=Z, plane=Y, identifier=E2]{(+2.8,-0.2)}
+		\Node[type=X, plane=X, identifier=E1]{(-1, 1, 0)}
+		\Node[type=Z, plane=Y, identifier=E2]{(-1, 1, -1)}
+
+		\Edge[axis=Y]{X2}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=X]{E2}{Z2}
+	}
+
+	% Double-CNOT (w. initial plane constraints and completed path)
+	\ZXGraph[style=cube]{
+		\Node[type=O, identifier=B1]{(0,  0, 1)}
+		\Node[type=O, identifier=B2]{(0, -1,-1)}
+
+		\Node[type=O, identifier=B3]{(-2, 0, 0)}
+		\Node[type=O, identifier=B4]{( 0, 2,-1)}
+
+		\Node[type=Z, plane=Y, identifier=Z1]{( 0, 0, 0)}
+		\Node[type=X, plane=X, identifier=X1]{( 0, 0,-1)}
+
+		\Node[type=Z, plane=Z, identifier=Z2]{( 0, 1,-1)}
+		\Node[type=X, plane=Z, identifier=X2]{(-1, 0, 0)}
+
+		\Edge[axis=Z]{B1}{Z1}
+		\Edge[axis=Y]{X1}{Z2}
+		\Edge[axis=Y]{Z2}{B4}
+
+		\Edge[axis=Y]{B2}{X1}
+		\Edge[axis=X]{Z1}{X2}
+		\Edge[axis=X]{X2}{B3}
+
+		\Edge[axis=Z]{X1}{Z1}
+
+		% The colours of the two extra spiders (i.e. E1, E2) can be inferred from the plane constraints
+		% along with the colours of their respective neighbour.
+		\Node[type=X, plane=X, identifier=E1]{(-1, 1, 0)}
+		\Node[type=Z, plane=Y, identifier=E2]{(-1, 1, -1)}
 
 		\Edge[axis=Y]{X2}{E1}
 		\Edge[axis=Z]{E1}{E2}

@@ -16,65 +16,15 @@
 \begin{document}
 	% Clique of four spiders (4 Red). [Symmetric with 4 Blue]
 	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, identifier=S2]{( 0,-1)}
-		\Node[type=X, identifier=S3]{( 1, 0)}
-		\Node[type=X, identifier=S4]{( 1,-1)}
+		\Node[type=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, identifier=S2]{(0, 0,-1)}
+		\Node[type=X, identifier=S3]{(0, 1, 0)}
+		\Node[type=X, identifier=S4]{(0, 1,-1)}
 
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{(-1,-1)}
-		\Node[type=O, identifier=B3]{(+2, 0)}
-		\Node[type=O, identifier=B4]{(+2,-1)}
-
-		\Edge{S1}{S2}
-		\Edge{S1}{S3}
-		\Edge{S1}{S4}
-		\Edge{S2}{S3}
-		\Edge{S2}{S4}
-		\Edge{S3}{S4}
-
-		\Edge{S1}{B1}
-		\Edge{S2}{B2}
-		\Edge{S3}{B3}
-		\Edge{S4}{B4}
-	}
-
-	% Clique of four spiders (4 Red). [Symmetric with 4 Blue]
-	\ZXGraph[labels=show]{
-		\Node[type=X, plane=U, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=U, identifier=S2]{( 0,-1)}
-		\Node[type=X, plane=U, identifier=S3]{( 1, 0)}
-		\Node[type=X, plane=U, identifier=S4]{( 1,-1)}
-
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{(-1,-1)}
-		\Node[type=O, identifier=B3]{(+2, 0)}
-		\Node[type=O, identifier=B4]{(+2,-1)}
-
-		\Edge[axis=U]{S1}{S2}
-		\Edge[axis=U]{S1}{S3}
-		\Edge[axis=U]{S1}{S4}
-		\Edge[axis=U]{S2}{S3}
-		\Edge[axis=U]{S2}{S4}
-		\Edge[axis=U]{S3}{S4}
-
-		\Edge[axis=U]{S1}{B1}
-		\Edge[axis=U]{S2}{B2}
-		\Edge[axis=U]{S3}{B3}
-		\Edge[axis=U]{S4}{B4}
-	}
-
-	% Clique of four spiders (3 Red, 1 Blue). [Symmetric with 3 Blue, 1 Red]
-	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, identifier=S2]{( 0,-1)}
-		\Node[type=X, identifier=S3]{( 1, 0)}
-		\Node[type=Z, identifier=S4]{( 1,-1)}
-
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{(-1,-1)}
-		\Node[type=O, identifier=B3]{(+2, 0)}
-		\Node[type=O, identifier=B4]{(+2,-1)}
+		\Node[type=O, identifier=B1]{(0,-1, 0)}
+		\Node[type=O, identifier=B2]{(0,-1,-1)}
+		\Node[type=O, identifier=B3]{(0, 2, 0)}
+		\Node[type=O, identifier=B4]{(0, 2,-1)}
 
 		\Edge{S1}{S2}
 		\Edge{S1}{S3}
@@ -91,40 +41,41 @@
 
 	% Clique of four spiders (3 Red, 1 Blue). [Symmetric with 3 Blue, 1 Red]
 	\ZXGraph[labels=show]{
-		\Node[type=X, plane=U, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=U, identifier=S2]{( 0,-1)}
-		\Node[type=X, plane=U, identifier=S3]{( 1, 0)}
-		\Node[type=Z, plane=U, identifier=S4]{( 1,-1)}
+		\Node[type=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, identifier=S2]{(0, 0,-1)}
+		\Node[type=X, identifier=S3]{(0, 1, 0)}
+		\Node[type=Z, identifier=S4]{(0, 1,-1)}
 
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{(-1,-1)}
-		\Node[type=O, identifier=B3]{(+2, 0)}
-		\Node[type=O, identifier=B4]{(+2,-1)}
+		\Node[type=O, identifier=B1]{(0,-1, 0)}
+		\Node[type=O, identifier=B2]{(0,-1,-1)}
+		\Node[type=O, identifier=B3]{(0, 2, 0)}
+		\Node[type=O, identifier=B4]{(0, 2,-1)}
 
-		\Edge[axis=U]{S1}{S2}
-		\Edge[axis=U]{S1}{S3}
-		\Edge[axis=U]{S1}{S4}
-		\Edge[axis=U]{S2}{S3}
-		\Edge[axis=U]{S2}{S4}
-		\Edge[axis=U]{S3}{S4}
+		\Edge{S1}{S2}
+		\Edge{S1}{S3}
+		\Edge{S1}{S4}
+		\Edge{S2}{S3}
+		\Edge{S2}{S4}
+		\Edge{S3}{S4}
 
-		\Edge[axis=U]{S1}{B1}
-		\Edge[axis=U]{S2}{B2}
-		\Edge[axis=U]{S3}{B3}
-		\Edge[axis=U]{S4}{B4}
+		\Edge{S1}{B1}
+		\Edge{S2}{B2}
+		\Edge{S3}{B3}
+		\Edge{S4}{B4}
 	}
+
 
 	% Clique of four spiders (2 Red, 2 Blue).
 	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, identifier=S2]{( 0,-1)}
-		\Node[type=Z, identifier=S3]{( 1, 0)}
-		\Node[type=Z, identifier=S4]{( 1,-1)}
+		\Node[type=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, identifier=S2]{(0, 0,-1)}
+		\Node[type=Z, identifier=S3]{(0, 1, 0)}
+		\Node[type=Z, identifier=S4]{(0, 1,-1)}
 
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{(-1,-1)}
-		\Node[type=O, identifier=B3]{(+2, 0)}
-		\Node[type=O, identifier=B4]{(+2,-1)}
+		\Node[type=O, identifier=B1]{(0,-1, 0)}
+		\Node[type=O, identifier=B2]{(0,-1,-1)}
+		\Node[type=O, identifier=B3]{(0, 2, 0)}
+		\Node[type=O, identifier=B4]{(0, 2,-1)}
 
 		\Edge{S1}{S2}
 		\Edge{S1}{S3}

@@ -14,18 +14,37 @@
 % This means they are not adjacent in 3D and require a sequence of edges to connect them.
 
 \begin{document}
-	\Legend{}
+%	\Legend{}
 
 	% Two RED spiders with distances (0, +3, -3) has Opt. MD=6. Minimal overhead: none.
 	\ZXGraph[labels=show]{
-		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=X, identifier=S2]{(+3,-3)}
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 3)}
+		\Node[type=X, plane=X, identifier=S2]{(0, 3, 0)}
 
-		\Node[type=X, plane=X, identifier=E1]{( 0,-1)}
-		\Node[type=X, plane=X, identifier=E2]{( 0,-2)}
-		\Node[type=X, plane=X, identifier=E3]{( 0,-3)}
-		\Node[type=X, plane=X, identifier=E4]{(+1,-3)}
-		\Node[type=X, plane=X, identifier=E5]{(+2,-3)}
+		\Node[type=X, plane=X, identifier=E1]{(0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{(0, 0, 1)}
+		\Node[type=X, plane=X, identifier=E3]{(0, 0, 0)}
+		\Node[type=X, plane=X, identifier=E4]{(0, 1, 0)}
+		\Node[type=X, plane=X, identifier=E5]{(0, 2, 0)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Z]{E2}{E3}
+		\Edge[axis=Y]{E3}{E4}
+		\Edge[axis=Y]{E4}{E5}
+		\Edge[axis=Y]{E5}{S2}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) has Opt. MD=6. Minimal overhead: none.
+	\ZXGraph[style=cube]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 3)}
+		\Node[type=X, plane=X, identifier=S2]{(0, 3, 0)}
+
+		\Node[type=X, plane=X, identifier=E1]{(0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{(0, 0, 1)}
+		\Node[type=X, plane=X, identifier=E3]{(0, 0, 0)}
+		\Node[type=X, plane=X, identifier=E4]{(0, 1, 0)}
+		\Node[type=X, plane=X, identifier=E5]{(0, 2, 0)}
 
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=Z]{E1}{E2}
@@ -36,17 +55,40 @@
 	}
 
 	% Two RED spiders with distances (0, +3, -3) have OMD=8. Minimal overhead: +2 extra spiders.
-	\ZXGraph[labels=show]{
-		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=Z, identifier=S2]{(+3,-3)}
+	\ZXGraph[labels = show]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 3)}
+		\Node[type=X, plane=Z, identifier=S2]{(0, 3, 0)}
 
-		\Node[type=X, plane=X, identifier=E1]{( 0,-1)}
-		\Node[type=X, plane=X, identifier=E2]{( 0,-2)}
-		\Node[type=Z, plane=Z, identifier=E3]{(+1,-2)}
-		\Node[type=X, plane=Y, identifier=E4]{(+1.7,-1.3)}
-		\Node[type=Z, plane=X, identifier=E5]{(+1.7,-2.3)}
-		\Node[type=Z, plane=X, identifier=E6]{(+2.7,-2.3)}
-		\Node[type=X, plane=Z, identifier=E7]{(+3.7,-2.3)}
+		\Node[type=X, plane=X, identifier=E1]{( 0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{( 0, 0, 1)}
+		\Node[type=Z, plane=Z, identifier=E3]{( 0, 1, 1)}
+		\Node[type=X, plane=Y, identifier=E4]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 1, 0)}
+		\Node[type=Z, plane=X, identifier=E6]{(-1, 2, 0)}
+		\Node[type=X, plane=Z, identifier=E7]{( 0, 2, 0)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=X]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=Y]{E5}{E6}
+		\Edge[axis=Y]{E6}{E7}
+		\Edge[axis=X]{E7}{S2}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) have OMD=8. Minimal overhead: +2 extra spiders.
+	\ZXGraph[style = cube]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 3)}
+		\Node[type=X, plane=Z, identifier=S2]{(0, 3, 0)}
+
+		\Node[type=X, plane=X, identifier=E1]{( 0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{( 0, 0, 1)}
+		\Node[type=Z, plane=Z, identifier=E3]{( 0, 1, 1)}
+		\Node[type=X, plane=Y, identifier=E4]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 1, 0)}
+		\Node[type=Z, plane=X, identifier=E6]{(-1, 2, 0)}
+		\Node[type=X, plane=Z, identifier=E7]{( 0, 2, 0)}
 
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=Z]{E1}{E2}
@@ -60,16 +102,39 @@
 
 	% Two RED spiders with distances (0, +3, -3) has OMD=8. Minimal overhead: +2 extra spiders.
 	\ZXGraph[labels=show]{
-		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=Z, identifier=S2]{(+3,-3)}
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 3)}
+		\Node[type=X, plane=Z, identifier=S2]{( 0, 3, 0)}
 
-		\Node[type=X, plane=X, identifier=E1]{( 0,-1)}
-		\Node[type=X, plane=X, identifier=E2]{( 0,-2)}
-		\Node[type=Z, plane=Z, identifier=E3]{(+1,-2)}
-		\Node[type=X, plane=Y, identifier=E4]{(+0.3,-2.7)}
-		\Node[type=Z, plane=X, identifier=E5]{(+0.3,-3.7)}
-		\Node[type=Z, plane=X, identifier=E6]{(+1.3,-3.7)}
-		\Node[type=X, plane=Z, identifier=E7]{(+2.3,-3.7)}
+		\Node[type=X, plane=X, identifier=E1]{( 0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{( 0, 0, 1)}
+		\Node[type=Z, plane=Z, identifier=E3]{( 0, 1, 1)}
+		\Node[type=X, plane=Y, identifier=E4]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 1, 0)}
+		\Node[type=Z, plane=X, identifier=E6]{(-1, 2, 0)}
+		\Node[type=X, plane=Z, identifier=E7]{(-1, 3, 0)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=X]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=Y]{E5}{E6}
+		\Edge[axis=Y]{E6}{E7}
+		\Edge[axis=X]{E7}{S2}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) has OMD=8. Minimal overhead: +2 extra spiders.
+	\ZXGraph[style=cube]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 3)}
+		\Node[type=X, plane=Z, identifier=S2]{( 0, 3, 0)}
+
+		\Node[type=X, plane=X, identifier=E1]{( 0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{( 0, 0, 1)}
+		\Node[type=Z, plane=Z, identifier=E3]{( 0, 1, 1)}
+		\Node[type=X, plane=Y, identifier=E4]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 1, 0)}
+		\Node[type=Z, plane=X, identifier=E6]{(-1, 2, 0)}
+		\Node[type=X, plane=Z, identifier=E7]{(-1, 3, 0)}
 
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=Z]{E1}{E2}
@@ -83,16 +148,41 @@
 
 	% Two RED spiders with distances (0, +3, -3) has OMD=8. Minimal overhead: +2 extra spiders.
 	\ZXGraph[labels=show]{
-		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=Z, identifier=S2]{(+3,-3)}
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 3)}
 
-		\Node[type=X, plane=X, identifier=E1]{( 0,-1)}
-		\Node[type=X, plane=X, identifier=E2]{( 0,-2)}
-		\Node[type=Z, plane=Z, identifier=E3]{(+1,-2)}
-		\Node[type=X, plane=Y, identifier=E4]{(+1.7,-1.3)}
-		\Node[type=Z, plane=X, identifier=E5]{(+1.7,-2.3)}
-		\Node[type=X, plane=Z, identifier=E6]{(+2.7,-2.3)}
-		\Node[type=X, plane=Z, identifier=E7]{(+2,-3)}
+		\Node[type=X, plane=X, identifier=E1]{( 0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{( 0, 0, 1)}
+		\Node[type=Z, plane=Z, identifier=E3]{( 0, 1, 1)}
+		\Node[type=X, plane=Y, identifier=E4]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 1, 0)}
+		\Node[type=X, plane=Z, identifier=E6]{(-1, 2, 0)}
+		\Node[type=X, plane=Z, identifier=E7]{( 0, 2, 0)}
+
+		\Node[type=X, plane=Z, identifier=S2]{(0, 3, 0)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=X]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=Y]{E5}{E6}
+		\Edge[axis=X]{E6}{E7}
+		\Edge[axis=Y]{E7}{S2}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) has OMD=8. Minimal overhead: +2 extra spiders.
+	\ZXGraph[style = cube]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 3)}
+
+		\Node[type=X, plane=X, identifier=E1]{( 0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{( 0, 0, 1)}
+		\Node[type=Z, plane=Z, identifier=E3]{( 0, 1, 1)}
+		\Node[type=X, plane=Y, identifier=E4]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 1, 0)}
+		\Node[type=X, plane=Z, identifier=E6]{(-1, 2, 0)}
+		\Node[type=X, plane=Z, identifier=E7]{( 0, 2, 0)}
+
+		\Node[type=X, plane=Z, identifier=S2]{( 0, 3, 0)}
 
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=Z]{E1}{E2}
@@ -105,19 +195,48 @@
 	}
 
 	% Two RED spiders with distances (0, +3, -3) has OMD=10. Minimal overhead: +4 extra spiders.
-	\ZXGraph[labels=show]{
-		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=Z, identifier=S2]{(+3,-3)}
+	\ZXGraph[labels = show]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 3)}
 
-		\Node[type=X, plane=X, identifier=E1]{( 0,-1)}
-		\Node[type=X, plane=X, identifier=E2]{( 0,-2)}
-		\Node[type=Z, plane=Z, identifier=E3]{(+1,-2)}
-		\Node[type=X, plane=Y, identifier=E4]{(+1.7,-1.3)}
-		\Node[type=Z, plane=X, identifier=E5]{(+1.7,-2.3)}
-		\Node[type=Z, plane=X, identifier=E6]{(+2.7,-2.3)}
-		\Node[type=Z, plane=X, identifier=E7]{(+3.7,-2.3)}
-		\Node[type=X, plane=Z, identifier=E8]{(+4.7,-2.3)}
-		\Node[type=X, plane=Z, identifier=E9]{(+4,-3)}
+		\Node[type=X, plane=X, identifier=E1]{( 0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{( 0, 0, 1)}
+		\Node[type=Z, plane=Z, identifier=E3]{( 0, 1, 1)}
+		\Node[type=X, plane=Y, identifier=E4]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 1, 0)}
+		\Node[type=Z, plane=X, identifier=E6]{(-1, 2, 0)}
+		\Node[type=Z, plane=X, identifier=E7]{(-1, 3, 0)}
+		\Node[type=X, plane=Z, identifier=E8]{(-1, 4, 0)}
+		\Node[type=X, plane=Z, identifier=E9]{(0, 4, 0)}
+
+		\Node[type=X, plane=Z, identifier=S2]{(0, 3, 0)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=X]{E3}{E4}
+		\Edge[axis=Z]{E4}{E5}
+		\Edge[axis=Y]{E5}{E6}
+		\Edge[axis=Y]{E6}{E7}
+		\Edge[axis=Y]{E7}{E8}
+		\Edge[axis=X]{E8}{E9}
+		\Edge[axis=Y]{E9}{S2}
+	}
+
+	% Two RED spiders with distances (0, +3, -3) has OMD=10. Minimal overhead: +4 extra spiders.
+	\ZXGraph[style = cube]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 3)}
+
+		\Node[type=X, plane=X, identifier=E1]{( 0, 0, 2)}
+		\Node[type=X, plane=X, identifier=E2]{( 0, 0, 1)}
+		\Node[type=Z, plane=Z, identifier=E3]{( 0, 1, 1)}
+		\Node[type=X, plane=Y, identifier=E4]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 1, 0)}
+		\Node[type=Z, plane=X, identifier=E6]{(-1, 2, 0)}
+		\Node[type=Z, plane=X, identifier=E7]{(-1, 3, 0)}
+		\Node[type=X, plane=Z, identifier=E8]{(-1, 4, 0)}
+		\Node[type=X, plane=Z, identifier=E9]{(0, 4, 0)}
+
+		\Node[type=X, plane=Z, identifier=S2]{(0, 3, 0)}
 
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=Z]{E1}{E2}

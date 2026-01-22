@@ -16,16 +16,16 @@
 \begin{document}
 	% Clique of three spiders (3 Red). [Symmetric with 3 Blue]
 	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, identifier=S2]{( 0,-1)}
-		\Node[type=X, identifier=S3]{( 1,-1)}
+		\Node[type=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, identifier=S2]{(0, 0,-1)}
+		\Node[type=X, identifier=S3]{(0, 1,-1)}
 
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{( 0,+1)}
-		\Node[type=O, identifier=B3]{(-1,-1)}
-		\Node[type=O, identifier=B4]{( 0,-2)}
-		\Node[type=O, identifier=B5]{(+1,-2)}
-		\Node[type=O, identifier=B6]{(+2,-1)}
+		\Node[type=O, identifier=B1]{(0,-1, 0)}
+		\Node[type=O, identifier=B2]{(0, 0,+1)}
+		\Node[type=O, identifier=B3]{(0,-1,-1)}
+		\Node[type=O, identifier=B4]{(0, 0,-2)}
+		\Node[type=O, identifier=B5]{(0, 1,-2)}
+		\Node[type=O, identifier=B6]{(0, 2,-1)}
 
 		\Edge{S1}{S2}
 		\Edge{S2}{S3}
@@ -43,16 +43,16 @@
 
 	% Clique of three spiders (3 Red). [Symmetric with 3 Blue]
 	\ZXGraph[labels=show]{
-		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=X, identifier=S2]{( 0,-1)}
-		\Node[type=X, plane=X, identifier=S3]{( 1,-1)}
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, plane=X, identifier=S2]{(0, 0,-1)}
+		\Node[type=X, plane=X, identifier=S3]{(0, 1,-1)}
 
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{( 0,+1)}
-		\Node[type=O, identifier=B3]{(-1,-1)}
-		\Node[type=O, identifier=B4]{( 0,-2)}
-		\Node[type=O, identifier=B5]{(+1,-2)}
-		\Node[type=O, identifier=B6]{(+2,-1)}
+		\Node[type=O, identifier=B1]{(0,-1, 0)}
+		\Node[type=O, identifier=B2]{(0, 0,+1)}
+		\Node[type=O, identifier=B3]{(0,-1,-1)}
+		\Node[type=O, identifier=B4]{(0, 0,-2)}
+		\Node[type=O, identifier=B5]{(0, 1,-2)}
+		\Node[type=O, identifier=B6]{(0, 2,-1)}
 
 		\Edge[axis=Z]{S1}{S2}
 		\Edge[axis=Y]{S2}{S3}
@@ -67,23 +67,23 @@
 		\Edge[axis=Y]{S3}{B6}
 
 		% Extra spiders
-		\Node[type=X, plane=X, identifier=E4]{( 1, 0)}
+		\Node[type=X, plane=X, identifier=E4]{(0, 1, 0)}
 		\Edge[axis=Z]{S3}{E4}
 		\Edge[axis=Y]{E4}{S1}
 	}
 
 	% Clique of three spiders (2 Red, 1 Blue). [Symmetric with 2 Blue, 1 Red]
 	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, identifier=S2]{( 0,-1)}
-		\Node[type=Z, identifier=S3]{( 1,-1)}
+		\Node[type=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, identifier=S2]{(0, 0,-1)}
+		\Node[type=X, identifier=S3]{(0, 1,-1)}
 
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{( 0,+1)}
-		\Node[type=O, identifier=B3]{(-1,-1)}
-		\Node[type=O, identifier=B4]{( 0,-2)}
-		\Node[type=O, identifier=B5]{(+1,-2)}
-		\Node[type=O, identifier=B6]{(+2,-1)}
+		\Node[type=O, identifier=B1]{(0,-1, 0)}
+		\Node[type=O, identifier=B2]{(0, 0,+1)}
+		\Node[type=O, identifier=B3]{(0,-1,-1)}
+		\Node[type=O, identifier=B4]{(0, 0,-2)}
+		\Node[type=O, identifier=B5]{(0, 1,-2)}
+		\Node[type=O, identifier=B6]{(0, 2,-1)}
 
 		\Edge{S1}{S2}
 		\Edge{S2}{S3}
@@ -100,17 +100,17 @@
 	}
 
 	% Clique of three spiders (2 Red, 1 Blue). [Symmetric with 2 Blue, 1 Red]
-	\ZXGraph[labels=show]{
-		\Node[type=X, plane=X, identifier=S1]{( 0, 0)}
-		\Node[type=X, plane=X, identifier=S2]{( 0,-1)}
-		\Node[type=Z, plane=Z, identifier=S3]{( 1,-1)}
+	\ZXGraph[labels = show]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, plane=X, identifier=S2]{(0, 0,-1)}
+		\Node[type=X, plane=Z, identifier=S3]{(0, 1,-1)}
 
-		\Node[type=O, identifier=B1]{(-1, 0)}
-		\Node[type=O, identifier=B2]{( 0,+1)}
-		\Node[type=O, identifier=B3]{(-1,-1)}
-		\Node[type=O, identifier=B4]{( 0,-2)}
-		\Node[type=O, identifier=B5]{(+0.3,-1.7)}
-		\Node[type=O, identifier=B6]{(+2,-1)}
+		\Node[type=O, identifier=B1]{(0,-1, 0)}
+		\Node[type=O, identifier=B2]{(0, 0,+1)}
+		\Node[type=O, identifier=B3]{(0,-1,-1)}
+		\Node[type=O, identifier=B4]{(0, 0,-2)}
+		\Node[type=O, identifier=B5]{(1, 1,-1)}
+		\Node[type=O, identifier=B6]{(0, 2,-1)}
 
 		\Edge[axis=Z]{S1}{S2}
 		\Edge[axis=Y]{S2}{S3}
@@ -125,14 +125,15 @@
 		\Edge[axis=Y]{S3}{B6}
 
 		% Extra spiders
-		\Node[type=Z, plane=Z, identifier=E4]{(+1, 0)}
-		\Node[type=X, plane=Y, identifier=E5]{(1.7, 0.7)}
-		\Node[type=X, plane=Y, identifier=E6]{(1.7,-0.3)}
+		\Node[type=Z, plane=Z, identifier=E4]{( 0, 1, 0)}
+		\Node[type=X, plane=Y, identifier=E5]{(-1, 1, 0)}
+		\Node[type=X, plane=Y, identifier=E6]{(-1, 1,-1)}
 
 		\Edge[axis=Y]{S1}{E4}
 		\Edge[axis=X]{E4}{E5}
 		\Edge[axis=Z]{E5}{E6}
 		\Edge[axis=X]{S3}{E6}
+
 	}
 
 \end{document}
