@@ -25,9 +25,7 @@
 	zx/graph/labels/.initial=hide,
 	zx/graph/labels/.store in=\ShowNodeLabels,
 	zx/graph/rotationX/.store in=\RotationX,
-	zx/graph/rotationX/.initial=65,
 	zx/graph/rotationZ/.store in=\RotationZ,
-	zx/graph/rotationZ/.initial=135,
 	% Node parameters
 	zx/node/kind/.store in=\NodeKind, % XZZ, ZXZ, ZZX, ZXX, XZX or XXZ
 	zx/node/type/.initial=X,
@@ -236,11 +234,14 @@
 			\def\GraphNodeStyle{spider}
 		\fi
 
-		\tdplotsetmaincoords{
-			\pgfkeysvalueof{/tikz/zx/graph/rotationX}
-		}{
-			\pgfkeysvalueof{/tikz/zx/graph/rotationZ}
-		}
+		\ifdefined\RotationX\else
+			\def\RotationX{65}
+		\fi
+		\ifdefined\RotationZ\else
+			\def\RotationZ{135}
+		\fi
+		
+		\tdplotsetmaincoords{\RotationX}{\RotationZ}
 
 		\begin{tikzpicture}[tdplot_main_coords]
 			{#2} % Layout of the ZX-Graph (i.e. nodes and edges) along with plane-constraints

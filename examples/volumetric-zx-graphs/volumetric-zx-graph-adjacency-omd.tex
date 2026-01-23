@@ -77,4 +77,134 @@
 		\Edge[axis=Z]{E6}{S2}
 	}
 
+	% RED and BLUE spiders in same PLANE with distances (0, 1, 0)
+	% Optimal Manhattan Distance = 7. Overhead: +6.
+	\ZXGraph[labels = show, rotationX = 65, rotationZ = 120]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 1)}
+
+		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
+		\Node[type=Z, plane=Y, identifier=E2]{(-1, 0, 1)}
+		\Node[type=X, plane=X, identifier=E3]{(-1, 0, 2)}
+		\Node[type=Z, plane=Z, identifier=E4]{(-1, 1, 2)}
+		\Node[type=X, plane=Y, identifier=E5]{( 0, 1, 2)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=X]{E1}{E2}
+		\Edge[axis=Z]{E2}{E3}
+		\Edge[axis=Y]{E3}{E4}
+		\Edge[axis=X]{E4}{E5}
+		\Edge[axis=Z]{E5}{S2}
+	}
+
+	\ZXGraph[style = cube, rotationX = 65, rotationZ = 120]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 1)}
+
+		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
+		\Node[type=Z, plane=Y, identifier=E2]{(-1, 0, 1)}
+		\Node[type=X, plane=X, identifier=E3]{(-1, 0, 2)}
+		\Node[type=Z, plane=Z, identifier=E4]{(-1, 1, 2)}
+		\Node[type=X, plane=Y, identifier=E5]{( 0, 1, 2)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=X]{E1}{E2}
+		\Edge[axis=Z]{E2}{E3}
+		\Edge[axis=Y]{E3}{E4}
+		\Edge[axis=X]{E4}{E5}
+		\Edge[axis=Z]{E5}{S2}
+	}
+
+	% RED and BLUE spiders in same PLANE with distances (1, 1, 0)
+	% Optimal Manhattan Distance = 4. Overhead: +3.
+	\ZXGraph[labels = show]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 0)}
+
+		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
+		\Node[type=X, plane=Z, identifier=E2]{(-1, 0, 1)}
+		\Node[type=Z, plane=X, identifier=E3]{(-1, 1, 1)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=X]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=Z]{E3}{S2}
+	}
+
+	\ZXGraph[style = cube]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 0)}
+
+		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
+		\Node[type=X, plane=Z, identifier=E2]{(-1, 0, 1)}
+		\Node[type=Z, plane=X, identifier=E3]{(-1, 1, 1)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=X]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=Z]{E3}{S2}
+	}
+
+	% RED and BLUE spiders in same PLANE with distances (1, 1, 1)
+	% Optimal Manhattan Distance = 3. Overhead: +2.
+	\ZXGraph[labels = show]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 1)}
+
+		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
+		\Node[type=X, plane=Z, identifier=E2]{(-1, 0, 1)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=X]{E1}{E2}
+		\Edge[axis=Y]{E2}{S2}
+	}
+
+	\ZXGraph[style=cube]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 1)}
+
+		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
+		\Node[type=X, plane=Z, identifier=E2]{(-1, 0, 1)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=X]{E1}{E2}
+		\Edge[axis=Y]{E2}{S2}
+	}
+
+	% RED and BLUE spiders in same PLANE with distances (1, 0, 0)
+	% Optimal Manhattan Distance = 3. Overhead: +4.
+	\ZXGraph[labels = show, rotationX = 65, rotationZ = 120]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
+
+		\Node[type=X, plane=X, identifier=E1]{( 0, 1, 0)}
+		\Node[type=Z, plane=Y, identifier=E2]{( 0, 1, 1)}
+		\Node[type=X, plane=Z, identifier=E3]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E4]{(-1, 0, 1)}
+
+		\Node[type=Z, plane=X, identifier=S2]{(-1, 0, 0)}
+
+		\Edge[axis=Y]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=X]{E2}{E3}
+		\Edge[axis=Y]{E3}{E4}
+		\Edge[axis=Z]{E4}{S2}
+	}
+
+	\ZXGraph[style = cube, rotationX = 65, rotationZ = 120]{
+		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
+
+		\Node[type=X, plane=X, identifier=E1]{( 0, 1, 0)}
+		\Node[type=Z, plane=Y, identifier=E2]{( 0, 1, 1)}
+		\Node[type=X, plane=Z, identifier=E3]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E4]{(-1, 0, 1)}
+
+		\Node[type=Z, plane=X, identifier=S2]{(-1, 0, 0)}
+
+		\Edge[axis=Y]{S1}{E1}
+		\Edge[axis=Z]{E1}{E2}
+		\Edge[axis=X]{E2}{E3}
+		\Edge[axis=Y]{E3}{E4}
+		\Edge[axis=Z]{E4}{S2}
+	}
+
 \end{document}

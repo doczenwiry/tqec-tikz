@@ -73,34 +73,7 @@
 	}
 
 	% Clique of three spiders (2 Red, 1 Blue). [Symmetric with 2 Blue, 1 Red]
-	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{(0, 0, 0)}
-		\Node[type=X, identifier=S2]{(0, 0,-1)}
-		\Node[type=X, identifier=S3]{(0, 1,-1)}
-
-		\Node[type=O, identifier=B1]{(0,-1, 0)}
-		\Node[type=O, identifier=B2]{(0, 0,+1)}
-		\Node[type=O, identifier=B3]{(0,-1,-1)}
-		\Node[type=O, identifier=B4]{(0, 0,-2)}
-		\Node[type=O, identifier=B5]{(0, 1,-2)}
-		\Node[type=O, identifier=B6]{(0, 2,-1)}
-
-		\Edge{S1}{S2}
-		\Edge{S2}{S3}
-		\Edge{S3}{S1}
-
-		\Edge{S1}{B1}
-		\Edge{S1}{B2}
-
-		\Edge{S2}{B3}
-		\Edge{S2}{B4}
-
-		\Edge{S3}{B5}
-		\Edge{S3}{B6}
-	}
-
-	% Clique of three spiders (2 Red, 1 Blue). [Symmetric with 2 Blue, 1 Red]
-	\ZXGraph[labels = show]{
+	\ZXGraph[labels = show, rotationX = 65, rotationZ = 125]{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=X, plane=X, identifier=S2]{(0, 0,-1)}
 		\Node[type=X, plane=Z, identifier=S3]{(0, 1,-1)}
@@ -133,7 +106,6 @@
 		\Edge[axis=X]{E4}{E5}
 		\Edge[axis=Z]{E5}{E6}
 		\Edge[axis=X]{S3}{E6}
-
 	}
 
 \end{document}

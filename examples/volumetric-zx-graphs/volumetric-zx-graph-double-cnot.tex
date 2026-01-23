@@ -15,7 +15,7 @@
 
 \begin{document}
 	% Double-CNOT
-	\ZXGraph[labels=show, rotationX = 0, rotationZ = 0]{
+	\ZXGraph[labels=show]{
 		\Node[type=O, identifier=B1]{(0, 0,  0)}
 		\Node[type=O, identifier=B2]{(0, 0, -1)}
 
@@ -96,8 +96,8 @@
 
 		% The colours of the two extra spiders (i.e. E1, E2) can be inferred from the plane constraints
 		% along with the colours of their respective neighbour.
-		\Node[type=X, plane=X, identifier=E1]{(-1, 1, 0)}
-		\Node[type=Z, plane=Y, identifier=E2]{(-1, 1, -1)}
+		\Node[type=Z, plane=X, identifier=E1]{(-1, 1, 0)}
+		\Node[type=X, plane=Y, identifier=E2]{(-1, 1, -1)}
 
 		\Edge[axis=Y]{X2}{E1}
 		\Edge[axis=Z]{E1}{E2}
@@ -130,8 +130,8 @@
 
 		% The colours of the two extra spiders (i.e. E1, E2) can be inferred from the plane constraints
 		% along with the colours of their respective neighbour.
-		\Node[type=X, plane=X, identifier=E1]{(-1, 1, 0)}
-		\Node[type=Z, plane=Y, identifier=E2]{(-1, 1, -1)}
+		\Node[type=Z, plane=X, identifier=E1]{(-1, 1,  0)}
+		\Node[type=X, plane=Y, identifier=E2]{(-1, 1, -1)}
 
 		\Edge[axis=Y]{X2}{E1}
 		\Edge[axis=Z]{E1}{E2}
