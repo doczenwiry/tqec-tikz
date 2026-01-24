@@ -3,6 +3,7 @@
 \input{../../tikz-surface-code-array.tex}
 
 \begin{document}
+
 	\SurfaceCodeArray[order = 5]{
 		\LogicalQubit[order=1, position={(4,4)}]{}
 	}{
@@ -10,7 +11,7 @@
 	}
 
 	\SurfaceCodeArray[order = 5]{
-		\LogicalQubit[order=1, orderW=5, position={(0,4)}]{}
+		\LogicalQubit[orderH=1, orderW=5, position={(0,4)}]{}
 	}{
 		% No logical gates
 	}
@@ -25,7 +26,7 @@
 
 	\SurfaceCodeArray[order = 5]{
 		\LogicalQubit[order=1, position={(0,4)}]{}
-		\LogicalQubit[order=1, orderH=5, position={(4,0)}]{}
+		\LogicalQubit[orderH=5, orderW=1, position={(4,0)}]{}
 		\LogicalQubit[order=1, position={(8,4)}]{}
 	}{
 		% No logical gates

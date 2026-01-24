@@ -3,39 +3,41 @@
 \input{../../tikz-surface-code-array.tex}
 
 \begin{document}
+
 	\SurfaceCodeArray[order = 3]{
-		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
-		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+		\LogicalQubit[order=1, position={(0,0)}, stabilizers=show]{}
+		\LogicalQubit[order=1, position={(4,4)}, stabilizers=show]{}
 	}{
 		% No logical gates
 	}
 
 	\SurfaceCodeArray[order = 3]{
-		\LogicalQubit[order=1, position={(0,0)}, orderW=3, labels=show]{}
-		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+		\LogicalQubit[orderH=1, orderW=3, position={(0,0)}, stabilizers=show]{}
+		\LogicalQubit[order=1, position={(4,4)}, stabilizers=show]{}
 	}{
 		% No logical gates
 	}
 
 	\SurfaceCodeArray[order = 3]{
-		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
-		\LogicalQubit[order=1, position={(4,0)}, labels=show]{}
-		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+		\LogicalQubit[order=1, position={(0,0)}, stabilizers=show]{}
+		\LogicalQubit[order=1, position={(4,0)}, stabilizers=show]{}
+		\LogicalQubit[order=1, position={(4,4)}, stabilizers=show]{}
 	}{
 		% No logical gates
 	}
 
 	\SurfaceCodeArray[order = 3]{
-		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
-		\LogicalQubit[order=1, position={(4,0)}, orderH=3, labels=show]{}
+		\LogicalQubit[order=1, position={(0,0)}, stabilizers=show]{}
+		\LogicalQubit[orderH=3, orderW=1, position={(4,0)}, stabilizers=show]{}
 	}{
 		% No logical gates
 	}
 
 	\SurfaceCodeArray[order = 3]{
-		\LogicalQubit[order=1, position={(0,0)}, labels=show]{}
-		\LogicalQubit[order=1, position={(4,4)}, labels=show]{}
+		\LogicalQubit[order=1, position={(0,0)}, stabilizers=show]{}
+		\LogicalQubit[order=1, position={(4,4)}, stabilizers=show]{}
 	}{
 		% No logical gates
 	}
+
 \end{document}
