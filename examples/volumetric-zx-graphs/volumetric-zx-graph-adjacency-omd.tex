@@ -2,8 +2,6 @@
 
 \input{../../tikz-volumetric-zx-graph.tex}
 
-\usepackage{tikz-3dplot}
-
 % A spider with at most four legs must have all its leg in the same plane (X, Y or Z)
 
 %\sc Minimal length of path connecting:
@@ -16,19 +14,16 @@
 % This means they are not adjacent in 3D and require a sequence of edges to connect them.
 
 \begin{document}
-%	\Legend{}
+	% Two RED spiders in same PLANE with distances (0, 1, 0)
+	% Optimal Manhattan Distance = 1. Overhead: 0.
+	\ZXGraph{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, plane=X, identifier=S2]{(0, 1, 0)}
 
-	% Two neighbouring RED spiders
-	\ZXGraph[labels=show]{
-		\Node[type=X, identifier=S1]{(0, 0, 0)}
-		\Node[type=X, identifier=S2]{(0, 1, 0)}
-
-		\Edge{S1}{S2}
+		\Edge[axis=Y]{S1}{S2}
 	}
 
-	% Two RED spiders in same PLANE with distances (0, 1, 0)
-	% Optimal Manhattan Distance = 1. Overhead: none.
-	\ZXGraph[labels=show]{
+	\ZXGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=X, plane=X, identifier=S2]{(0, 1, 0)}
 
@@ -37,7 +32,7 @@
 
 	% RED and BLUE spiders in same PLANE with distances (0, 1, 0)
 	% Optimal Manhattan Distance = 7. Overhead: +6.
-	\ZXGraph[labels = show]{
+	\ZXGraph{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 0)}
 
@@ -55,9 +50,11 @@
 		\Edge[axis=Z]{E4}{E5}
 		\Edge[axis=X]{E5}{E6}
 		\Edge[axis=Z]{E6}{S2}
+
+		\ManhattanDistance[md={(0,1,0)}]{S1}{S2}
 	}
 
-	\ZXGraph[style=cube]{
+	\ZXGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 0)}
 
@@ -75,29 +72,67 @@
 		\Edge[axis=Z]{E4}{E5}
 		\Edge[axis=X]{E5}{E6}
 		\Edge[axis=Z]{E6}{S2}
+
+		\ManhattanDistance[md={(0,1,0)}]{S1}{S2}
 	}
 
-	% RED and BLUE spiders in same PLANE with distances (0, 1, 0)
+	% Two RED spiders in different PLANE with distances (0, 1, 0)
 	% Optimal Manhattan Distance = 7. Overhead: +6.
-	\ZXGraph[labels = show, rotationX = 65, rotationZ = 120]{
+	\ZXGraph{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
-		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 1)}
+		\Node[type=X, plane=Z, identifier=S2]{(0, 1, 0)}
 
 		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
-		\Node[type=Z, plane=Y, identifier=E2]{(-1, 0, 1)}
-		\Node[type=X, plane=X, identifier=E3]{(-1, 0, 2)}
-		\Node[type=Z, plane=Z, identifier=E4]{(-1, 1, 2)}
-		\Node[type=X, plane=Y, identifier=E5]{( 0, 1, 2)}
+		\Node[type=X, plane=Z, identifier=E2]{(-1, 0, 1)}
+		\Node[type=Z, plane=X, identifier=E3]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E4]{(-1, 1, 0)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 2, 0)}
+		\Node[type=X, plane=Y, identifier=E6]{(-1, 2, 1)}
+		\Node[type=X, plane=Y, identifier=E7]{( 0, 2, 1)}
+		\Node[type=Z, plane=X, identifier=E8]{( 0, 2, 0)}
 
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=X]{E1}{E2}
-		\Edge[axis=Z]{E2}{E3}
-		\Edge[axis=Y]{E3}{E4}
-		\Edge[axis=X]{E4}{E5}
-		\Edge[axis=Z]{E5}{S2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=Z]{E3}{E4}
+		\Edge[axis=Y]{E4}{E5}
+		\Edge[axis=Z]{E5}{E6}
+		\Edge[axis=X]{E6}{E7}
+		\Edge[axis=Z]{E7}{E8}
+		\Edge[axis=Y]{E8}{S2}
+
+		\ManhattanDistance[md={(0,1,0)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = cube, rotationX = 65, rotationZ = 120]{
+	\ZXGraph[style = bg]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=X, plane=Z, identifier=S2]{(0, 1, 0)}
+
+		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
+		\Node[type=X, plane=Z, identifier=E2]{(-1, 0, 1)}
+		\Node[type=Z, plane=X, identifier=E3]{(-1, 1, 1)}
+		\Node[type=Z, plane=X, identifier=E4]{(-1, 1, 0)}
+		\Node[type=Z, plane=X, identifier=E5]{(-1, 2, 0)}
+		\Node[type=X, plane=Y, identifier=E6]{(-1, 2, 1)}
+		\Node[type=X, plane=Y, identifier=E7]{( 0, 2, 1)}
+		\Node[type=Z, plane=X, identifier=E8]{( 0, 2, 0)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=X]{E1}{E2}
+		\Edge[axis=Y]{E2}{E3}
+		\Edge[axis=Z]{E3}{E4}
+		\Edge[axis=Y]{E4}{E5}
+		\Edge[axis=Z]{E5}{E6}
+		\Edge[axis=X]{E6}{E7}
+		\Edge[axis=Z]{E7}{E8}
+		\Edge[axis=Y]{E8}{S2}
+
+		\ManhattanDistance[md={(0,1,0)}]{S1}{S2}
+	}
+
+	% RED and BLUE spiders in same PLANE with distances (0, 1, 1)
+	% Optimal Manhattan Distance = 6. Overhead: +4.
+	\ZXGraph{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 1)}
 
@@ -113,11 +148,33 @@
 		\Edge[axis=Y]{E3}{E4}
 		\Edge[axis=X]{E4}{E5}
 		\Edge[axis=Z]{E5}{S2}
+
+		\ManhattanDistance[md={(0,1,1)}]{S1}{S2}
+	}
+
+	\ZXGraph[style = bg]{
+		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
+		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 1)}
+
+		\Node[type=Z, plane=Y, identifier=E1]{( 0, 0, 1)}
+		\Node[type=Z, plane=Y, identifier=E2]{(-1, 0, 1)}
+		\Node[type=X, plane=X, identifier=E3]{(-1, 0, 2)}
+		\Node[type=Z, plane=Z, identifier=E4]{(-1, 1, 2)}
+		\Node[type=X, plane=Y, identifier=E5]{( 0, 1, 2)}
+
+		\Edge[axis=Z]{S1}{E1}
+		\Edge[axis=X]{E1}{E2}
+		\Edge[axis=Z]{E2}{E3}
+		\Edge[axis=Y]{E3}{E4}
+		\Edge[axis=X]{E4}{E5}
+		\Edge[axis=Z]{E5}{S2}
+
+		\ManhattanDistance[md={(0,1,1)}]{S1}{S2}
 	}
 
 	% RED and BLUE spiders in same PLANE with distances (1, 1, 0)
-	% Optimal Manhattan Distance = 4. Overhead: +3.
-	\ZXGraph[labels = show]{
+	% Optimal Manhattan Distance = 4. Overhead: +2.
+	\ZXGraph{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 0)}
 
@@ -129,9 +186,11 @@
 		\Edge[axis=X]{E1}{E2}
 		\Edge[axis=Y]{E2}{E3}
 		\Edge[axis=Z]{E3}{S2}
+
+		\ManhattanDistance[md={(1,1,0)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = cube]{
+	\ZXGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 0)}
 
@@ -143,11 +202,13 @@
 		\Edge[axis=X]{E1}{E2}
 		\Edge[axis=Y]{E2}{E3}
 		\Edge[axis=Z]{E3}{S2}
+
+		\ManhattanDistance[md={(1,1,0)}]{S1}{S2}
 	}
 
 	% RED and BLUE spiders in same PLANE with distances (1, 1, 1)
-	% Optimal Manhattan Distance = 3. Overhead: +2.
-	\ZXGraph[labels = show]{
+	% Optimal Manhattan Distance = 3. Overhead: 0.
+	\ZXGraph{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 1)}
 
@@ -157,9 +218,11 @@
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=X]{E1}{E2}
 		\Edge[axis=Y]{E2}{S2}
+
+		\ManhattanDistance[md={(1,1,1)}]{S1}{S2}
 	}
 
-	\ZXGraph[style=cube]{
+	\ZXGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 1)}
 
@@ -169,11 +232,13 @@
 		\Edge[axis=Z]{S1}{E1}
 		\Edge[axis=X]{E1}{E2}
 		\Edge[axis=Y]{E2}{S2}
+
+		\ManhattanDistance[md={(1,1,1)}]{S1}{S2}
 	}
 
 	% RED and BLUE spiders in same PLANE with distances (1, 0, 0)
 	% Optimal Manhattan Distance = 3. Overhead: +4.
-	\ZXGraph[labels = show, rotationX = 65, rotationZ = 120]{
+	\ZXGraph{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 
 		\Node[type=X, plane=X, identifier=E1]{( 0, 1, 0)}
@@ -188,9 +253,11 @@
 		\Edge[axis=X]{E2}{E3}
 		\Edge[axis=Y]{E3}{E4}
 		\Edge[axis=Z]{E4}{S2}
+
+		\ManhattanDistance[md={(1,0,0)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = cube, rotationX = 65, rotationZ = 120]{
+	\ZXGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 
 		\Node[type=X, plane=X, identifier=E1]{( 0, 1, 0)}
@@ -205,6 +272,8 @@
 		\Edge[axis=X]{E2}{E3}
 		\Edge[axis=Y]{E3}{E4}
 		\Edge[axis=Z]{E4}{S2}
+
+		\ManhattanDistance[md={(1,0,0)}]{S1}{S2}
 	}
 
 \end{document}

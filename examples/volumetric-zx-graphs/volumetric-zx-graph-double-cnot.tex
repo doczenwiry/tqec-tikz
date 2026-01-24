@@ -15,7 +15,7 @@
 
 \begin{document}
 	% Double-CNOT
-	\ZXGraph[labels=show]{
+	\ZXGraph{
 		\Node[type=O, identifier=B1]{(0, 0,  0)}
 		\Node[type=O, identifier=B2]{(0, 0, -1)}
 
@@ -41,7 +41,7 @@
 	}
 
 	% Double-CNOT (w. initial plane constraints)
-	\ZXGraph[labels = show]{
+	\ZXGraph{
 		\Node[type=O, identifier=B1]{(0,  0, 1)}
 		\Node[type=O, identifier=B2]{(0, -1,-1)}
 
@@ -67,11 +67,11 @@
 
 		% Given the colors and planes assigned to X1, Z1 and Z2, the shortest path between spiders Z2 and X2
 		% has a Manhattan Distance of at least 3, which means two extra spiders are needed.
-		\Edge[axis=U]{Z2}{X2}
+		\ManhattanDistance[md={(1,1,1)}]{Z2}{X2}
 	}
 
 	% Double-CNOT (w. initial plane constraints and completed path)
-	\ZXGraph[labels=show]{
+	\ZXGraph{
 		\Node[type=O, identifier=B1]{(0,  0, 1)}
 		\Node[type=O, identifier=B2]{(0, -1,-1)}
 
@@ -105,7 +105,7 @@
 	}
 
 	% Double-CNOT (w. initial plane constraints and completed path)
-	\ZXGraph[style=cube]{
+	\ZXGraph[style = bg]{
 		\Node[type=O, identifier=B1]{(0,  0, 1)}
 		\Node[type=O, identifier=B2]{(0, -1,-1)}
 

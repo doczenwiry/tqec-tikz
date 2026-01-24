@@ -15,7 +15,7 @@
 
 \begin{document}
 	% CNOT
-	\ZXGraph[labels=show]{
+	\ZXGraph{
 		\Node[type=O, identifier=B1]{(0, 0, 0)}
 		\Node[type=X, identifier=X1]{(0, 1, 0)}
 		\Node[type=O, identifier=B2]{(0, 0,-1)}
@@ -32,7 +32,24 @@
 	}
 
 	% CNOT. With plane constraints; the two spiders are adjacent in 3D (i.e. MD=1).
-	\ZXGraph[labels=show]{
+	\ZXGraph{
+		\Node[type=O, identifier=B1]{(0, 0, 0)}
+		\Node[type=X, plane=X, identifier=X1]{(0, 1, 0)}
+		\Node[type=O, identifier=B3]{(0, 2, 0)}
+
+		\Node[type=O, identifier=B2]{( 1, 1,-1)}
+		\Node[type=Z, plane=Y, identifier=Z1]{(0, 1,-1)}
+		\Node[type=O, identifier=B4]{(-1, 1,-1)}
+
+		\Edge[axis=Y]{X1}{B1}
+		\Edge[axis=Y]{X1}{B3}
+		\Edge[axis=Z]{X1}{Z1}
+		\Edge[axis=X]{Z1}{B2}
+		\Edge[axis=X]{Z1}{B4}
+	}
+
+	% CNOT. With plane constraints; the two spiders are adjacent in 3D (i.e. MD=1).
+	\ZXGraph[style = bg]{
 		\Node[type=O, identifier=B1]{(0, 0, 0)}
 		\Node[type=X, plane=X, identifier=X1]{(0, 1, 0)}
 		\Node[type=O, identifier=B3]{(0, 2, 0)}
