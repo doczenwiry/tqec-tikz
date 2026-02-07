@@ -23,17 +23,20 @@
 	% Graph parameters
 	zx/graph/style/.initial=zx, % global style for all nodes; zx or bg
 	zx/graph/labels/.initial=show,    % whether to show node labels or not
-	zx/graph/rotationX/.initial=65,   % Rotation along x-axis for tikz-3dplot
-	zx/graph/rotationZ/.initial=120,  % Rotation along z-axis for tikz-3dplot
+	zx/graph/rotationX/.initial=58,   % Rotation along x-axis for tikz-3dplot
+	zx/graph/rotationZ/.initial=112,  % Rotation along z-axis for tikz-3dplot
 	% Node parameters
 	zx/node/kind/.initial=UUU,
 	zx/node/type/.initial=U,
 	zx/node/plane/.initial=U,
+	zx/node/label/.initial=,
+	zx/node/visibility/.initial=plain, % controls node opacity; plain, faint or ghost
 	zx/node/identifier/.store in=\Identifier, % Used to connect edges
 	zx/node/style/.initial=,
 	% Edge parameters
 	zx/edge/axis/.initial=U, % Edge represents change of +1/-1 between two adjacent nodes along this axis
 	zx/edge/type/.initial=identity, % identity or hadamard
+	zx/edge/visibility/.initial=plain, % controls edge opacity; plain, faint or ghost
 	zx/edge/md/.store in=\ManhattanDistance, % Manhattan Distance
 }
 
@@ -44,7 +47,9 @@
 		\def\NodeKind{\pgfkeysvalueof{/tikz/zx/node/kind}}
 		\def\NodeType{\pgfkeysvalueof{/tikz/zx/node/type}}
 		\def\NodePlane{\pgfkeysvalueof{/tikz/zx/node/plane}}
+		\def\NodeLabel{\pgfkeysvalueof{/tikz/zx/node/label}}
 		\def\NodeStyle{\pgfkeysvalueof{/tikz/zx/node/style}}
+		\def\NodeVisibility{\pgfkeysvalueof{/tikz/zx/node/visibility}}
 		\ifthenelse{\equal{\NodeStyle}{}}{
 			\def\NodeStyle{\GraphStyle}
 		}{
@@ -55,6 +60,12 @@
 		\ifdefined\Identifier\else
 			\def\Identifier{}
 		\fi
+
+		\ifthenelse{\equal{\NodeLabel}{} \and \equal{\ShowNodeLabels}{all}}{
+			\def\NodeLabel{\Identifier}
+		}{
+			% Do nothing
+		}
 
 		% Prepare the coordinate of the center of the node
 		\coordinate (node\Identifier) at #2;
@@ -111,24 +122,29 @@
 			}
 		}
 
+		\IfStrEqCase{\NodeVisibility}{
+			{plain}{\def\NodeOpacity{1.000}}
+			{faint}{\def\NodeOpacity{0.200}}
+			{ghost}{\def\NodeOpacity{0.025}}
+		}
+
 		\IfStrEqCase{\NodeStyle}{
 			{zx}{
 				% Draw disk
 				\ifthenelse{\equal{\NodeType}{O}}{
-					\fill[\NodeType] (node\Identifier) circle (2pt);
+					\fill[\NodeType, opacity = \NodeOpacity] (node\Identifier) circle (2pt);
 				}{
-					\fill[\NodeType] (node\Identifier) circle (3pt);
+					\fill[\NodeType, opacity = \NodeOpacity] (node\Identifier) circle (3pt);
 				}
 			
 				% Draw plane constraint
 				\ifthenelse{\not\equal{\NodeType}{O}}{
-					\draw[\NodePlane, line width = 1pt] (node\Identifier) circle (4pt);
+					\draw[\NodePlane, line width = 1pt, opacity = \NodeOpacity] (node\Identifier) circle (4pt);
 				}{
 					% Do not draw
 				}
 			}
 			{bg}{
-				\def\CubeOpacity{1.0}
 				\IfStrEqCase{\NodeKind}{
 					{UUU}{\def\ColorX{U}\def\ColorY{U}\def\ColorZ{U}}
 					{XXX}{\def\ColorX{X}\def\ColorY{X}\def\ColorZ{X}}
@@ -164,82 +180,82 @@
 
 				\ifthenelse{\equal{\NodeKind}{XXX} \or \equal{\NodeKind}{ZZZ}}{
 					% TODO: Try a black square with a slightly smaller coloured square inside
-					\fill[U, opacity = \CubeOpacity]
+					\fill[U, opacity = \NodeOpacity]
 							 ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset            , -\CubeOffset            )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset            )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset            , -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- cycle;
 
-					\fill[U, opacity = \CubeOpacity]
+					\fill[U, opacity = \NodeOpacity]
 							 ([shift={(-\CubeOffset            , -\CubeOffset + \CubeSize, -\CubeOffset            )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset            )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset            , -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- cycle;
 
-					\fill[U, opacity = \CubeOpacity]
+					\fill[U, opacity = \NodeOpacity]
 							 ([shift={(-\CubeOffset            , -\CubeOffset            , -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset            , -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset            , -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- cycle;
 
-					\fill[\ColorX, rounded corners = 0.25pt, opacity = \CubeOpacity]
+					\fill[\ColorX, rounded corners = 0.25pt, opacity = \NodeOpacity]
 							 ([shift={(-\CubeOffset + \CubeSize, -\FaceOffset            , -\FaceOffset            )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\FaceOffset + \FaceSize, -\FaceOffset            )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\FaceOffset + \FaceSize, -\FaceOffset + \FaceSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\FaceOffset            , -\FaceOffset + \FaceSize)}] node\Identifier)
 						  -- cycle;
 
-					\fill[\ColorY, rounded corners = 0.25pt, opacity = \CubeOpacity]
+					\fill[\ColorY, rounded corners = 0.25pt, opacity = \NodeOpacity]
 							 ([shift={(-\FaceOffset            , -\CubeOffset + \CubeSize, -\FaceOffset            )}] node\Identifier)
 						  -- ([shift={(-\FaceOffset + \FaceSize, -\CubeOffset + \CubeSize, -\FaceOffset            )}] node\Identifier)
 						  -- ([shift={(-\FaceOffset + \FaceSize, -\CubeOffset + \CubeSize, -\FaceOffset + \FaceSize)}] node\Identifier)
 						  -- ([shift={(-\FaceOffset            , -\CubeOffset + \CubeSize, -\FaceOffset + \FaceSize)}] node\Identifier)
 						  -- cycle;
 
-					\fill[\ColorZ, rounded corners = 0.25pt, opacity = \CubeOpacity]
+					\fill[\ColorZ, rounded corners = 0.25pt, opacity = \NodeOpacity]
 							 ([shift={(-\FaceOffset            , -\FaceOffset            , -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\FaceOffset + \FaceSize, -\FaceOffset            , -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\FaceOffset + \FaceSize, -\FaceOffset + \FaceSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\FaceOffset            , -\FaceOffset + \FaceSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- cycle;
 				}{
-					\fill[\ColorX, opacity = \CubeOpacity] ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset    , -\CubeOffset    )}] node\Identifier)
+					\fill[\ColorX, opacity = \NodeOpacity] ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset    , -\CubeOffset    )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset    )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset    , -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- cycle;
 			
-					\fill[\ColorY, opacity = \CubeOpacity] ([shift={(-\CubeOffset    , -\CubeOffset + \CubeSize, -\CubeOffset    )}] node\Identifier)
+					\fill[\ColorY, opacity = \NodeOpacity] ([shift={(-\CubeOffset    , -\CubeOffset + \CubeSize, -\CubeOffset    )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset    )}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset    , -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- cycle;
 			
-					\fill[\ColorZ, opacity = \CubeOpacity] ([shift={(-\CubeOffset    , -\CubeOffset    , -\CubeOffset + \CubeSize)}] node\Identifier)
+					\fill[\ColorZ, opacity = \NodeOpacity] ([shift={(-\CubeOffset    , -\CubeOffset    , -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset    , -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- ([shift={(-\CubeOffset    , -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 						  -- cycle;
 				}
 
-				\draw[border, opacity = \CubeOpacity]
+				\draw[border, opacity = \NodeOpacity]
 						 ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset            , -\CubeOffset            )}] node\Identifier)
 					  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset            )}] node\Identifier)
 					  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 					  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset            , -\CubeOffset + \CubeSize)}] node\Identifier)
 					  -- cycle;
 
-				\draw[border, opacity = \CubeOpacity]
+				\draw[border, opacity = \NodeOpacity]
 						 ([shift={(-\CubeOffset            , -\CubeOffset + \CubeSize, -\CubeOffset            )}] node\Identifier)
 					  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset            )}] node\Identifier)
 					  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 					  -- ([shift={(-\CubeOffset            , -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
 					  -- cycle;
 
-				\draw[border, opacity = \CubeOpacity]
+				\draw[border, opacity = \NodeOpacity]
 						 ([shift={(-\CubeOffset            , -\CubeOffset            , -\CubeOffset + \CubeSize)}] node\Identifier)
 					  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset            , -\CubeOffset + \CubeSize)}] node\Identifier)
 					  -- ([shift={(-\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize, -\CubeOffset + \CubeSize)}] node\Identifier)
@@ -250,7 +266,7 @@
 
 		% Display the node label if requested
 		\ifthenelse{\equal{\ShowNodeLabels}{show}}{
-			\node[white, scale=0.25] at (node\Identifier) {\tt\Identifier};
+			\node[white, scale=0.25] at (node\Identifier) {\Large\tt \NodeLabel};
 		}{
 			% Do nothing
 		}
@@ -264,10 +280,17 @@
 
 		\def\EdgeAxis{\pgfkeysvalueof{/tikz/zx/edge/axis}}
 		\def\EdgeType{\pgfkeysvalueof{/tikz/zx/edge/type}}
+		\def\EdgeVisibility{\pgfkeysvalueof{/tikz/zx/edge/visibility}}
 
-		\draw[edge, white, line width = 2.5pt] (node#2) -- (node#3);
-		\draw[edge, \EdgeType] (node#2) -- (node#3);
-		\draw[edge, thick, \EdgeAxis] (node#2) -- (node#3);
+		\IfStrEqCase{\EdgeVisibility}{
+			{plain}{\def\EdgeOpacity{1.000}}
+			{faint}{\def\EdgeOpacity{0.200}}
+			{ghost}{\def\EdgeOpacity{0.025}}
+		}
+
+		\draw[edge, white, line width = 2.5pt, opacity = \EdgeOpacity] (node#2) -- (node#3);
+		\draw[edge, \EdgeType, opacity = \EdgeOpacity] (node#2) -- (node#3);
+		\draw[edge, thick, \EdgeAxis, opacity = \EdgeOpacity] (node#2) -- (node#3);
 	\endgroup
 }
 
@@ -281,7 +304,7 @@
 	\endgroup
 }
 
-\newcommand{\ZXGraph}[2][]{
+\newcommand{\ZxGraph}[2][]{
 	\begingroup
 		\tikzset{zx/graph/.cd, #1}
 		\def\GraphStyle{\pgfkeysvalueof{/tikz/zx/graph/style}}
@@ -299,7 +322,7 @@
 
 % Correspondence between BlockGraph and Volumetric ZX-Graph notation.
 \newcommand{\Legend}{
-	\ZXGraph[rotationX = 65, rotationZ = 135]{
+	\ZxGraph[rotationX = 65, rotationZ = 135]{
 		% Summary of planes, axes and associated colours
 		\begin{scope}[scale=0.75, shift={(2.25, 0, 2.5)}]
 			\draw[-stealth] (0,0,0) -- +(1,0,0);

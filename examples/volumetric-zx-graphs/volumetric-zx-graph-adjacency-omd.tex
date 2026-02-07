@@ -16,14 +16,14 @@
 \begin{document}
 	% Two RED spiders in same PLANE with distances (0, 1, 0)
 	% Optimal Manhattan Distance = 1. Overhead: 0.
-	\ZXGraph{
+	\ZxGraph{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=X, plane=X, identifier=S2]{(0, 1, 0)}
 
 		\Edge[axis=Y]{S1}{S2}
 	}
 
-	\ZXGraph[style = bg]{
+	\ZxGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=X, plane=X, identifier=S2]{(0, 1, 0)}
 
@@ -32,7 +32,7 @@
 
 	% RED and BLUE spiders in same PLANE with distances (0, 1, 0)
 	% Optimal Manhattan Distance = 7. Overhead: +6.
-	\ZXGraph{
+	\ZxGraph{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 0)}
 
@@ -54,7 +54,7 @@
 		\ManhattanDistance[md={(0,1,0)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = bg]{
+	\ZxGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 0)}
 
@@ -78,7 +78,7 @@
 
 	% Two RED spiders in different PLANE with distances (0, 1, 0)
 	% Optimal Manhattan Distance = 7. Overhead: +6.
-	\ZXGraph{
+	\ZxGraph{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=X, plane=Z, identifier=S2]{(0, 1, 0)}
 
@@ -104,7 +104,7 @@
 		\ManhattanDistance[md={(0,1,0)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = bg]{
+	\ZxGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=X, plane=Z, identifier=S2]{(0, 1, 0)}
 
@@ -132,7 +132,7 @@
 
 	% RED and BLUE spiders in same PLANE with distances (0, 1, 1)
 	% Optimal Manhattan Distance = 6. Overhead: +4.
-	\ZXGraph{
+	\ZxGraph{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 1)}
 
@@ -152,7 +152,7 @@
 		\ManhattanDistance[md={(0,1,1)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = bg]{
+	\ZxGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{(0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(0, 1, 1)}
 
@@ -174,7 +174,7 @@
 
 	% RED and BLUE spiders in same PLANE with distances (1, 1, 0)
 	% Optimal Manhattan Distance = 4. Overhead: +2.
-	\ZXGraph{
+	\ZxGraph{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 0)}
 
@@ -190,7 +190,7 @@
 		\ManhattanDistance[md={(1,1,0)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = bg]{
+	\ZxGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 0)}
 
@@ -208,7 +208,7 @@
 
 	% RED and BLUE spiders in same PLANE with distances (1, 1, 1)
 	% Optimal Manhattan Distance = 3. Overhead: 0.
-	\ZXGraph{
+	\ZxGraph{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 1)}
 
@@ -222,7 +222,7 @@
 		\ManhattanDistance[md={(1,1,1)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = bg]{
+	\ZxGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 		\Node[type=Z, plane=X, identifier=S2]{(-1, 1, 1)}
 
@@ -238,7 +238,7 @@
 
 	% RED and BLUE spiders in same PLANE with distances (1, 0, 0)
 	% Optimal Manhattan Distance = 3. Overhead: +4.
-	\ZXGraph{
+	\ZxGraph{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 
 		\Node[type=X, plane=X, identifier=E1]{( 0, 1, 0)}
@@ -257,7 +257,7 @@
 		\ManhattanDistance[md={(1,0,0)}]{S1}{S2}
 	}
 
-	\ZXGraph[style = bg]{
+	\ZxGraph[style = bg]{
 		\Node[type=X, plane=X, identifier=S1]{( 0, 0, 0)}
 
 		\Node[type=X, plane=X, identifier=E1]{( 0, 1, 0)}
